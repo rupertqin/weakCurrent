@@ -1,11 +1,22 @@
-let rupert = "xiang"
-let b = 22
+// shivs for support IE8 and below
+require("es5-shim");
+require("es5-shim/es5-sham");
+require("html5shiv");
 
-let c = rupert + b
 
-function function_name (argument) {
-	// body...
-	return rupert + b + c
-}
 
-document.body.innerHTML = c
+var React = require("react")
+
+var CommentBox = React.createClass({
+  render: function() {
+    return (
+      <section className="commentBox">
+        Hello, world! I am a CommentBox.
+      </section>
+    );
+  }
+});
+React.render(
+  <CommentBox />,
+  document.getElementById('example')
+);
