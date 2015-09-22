@@ -13,7 +13,7 @@ module.exports = {
             { test: /\.css$/, loader: 'style!raw' },
             { test: /\.(png|gif|jpg)$/, loader: 'file?name=img/[name].[ext]&path=../../img/[name].[ext]' },
             // { test: /\.png$/, loader: 'url?mimetype=image/png&limit=500' },
-            { test: /\.jsx?$/, exclude: /(node_modules|bower_components)/, loader: 'babel?optional[]=runtime&stage=0'}
+            { test: /\.jsx?$/, exclude: /(node_modules|bower_components)/, loader: 'babel'}
         ]
     },
     devServer: {
