@@ -5,7 +5,8 @@ module.exports = {
     },
     output: {
         path: __dirname + '/public/build/js/',
-        filename: "[name].bundle.js"
+        filename: "[name].bundle.js",
+        publicPath: 'build/js/'
     },
     module: {
         loaders: [
@@ -18,7 +19,7 @@ module.exports = {
     },
     devServer: {
         contentBase: "./public",
-        port: "8080",
+        port: "4000",
         host: "0.0.0.0"
     }
 };

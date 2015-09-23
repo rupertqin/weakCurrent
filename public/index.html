@@ -31,18 +31,20 @@
     <meta name="theme-color" content="#3372DF">
 	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
     <!--[if lte IE 8]>
-        <script src="bower_components/html5shiv/dist/html5shiv.min.js"></script>
+        <script src="bower_components/html5shiv/dist/html5shiv.js"></script>
     <![endif]-->
 </head>
 <body>
 <div id="example"></div>
 
-<!--[if gt IE 8]>
-<script src="/webpack-dev-server.js"></script>
-<![endif]-->
+
+
+<!--[if !IE]><!-->
+    <script src="/webpack-dev-server.js"></script>
+<!--<![endif]-->
 <!--[if lte IE 8]>
-    <script src="bower_components/es5-shim/es5-shim.min.js"></script>
-    <script src="bower_components/es5-shim/es5-sham.min.js"></script>
+    <script src="bower_components/es5-shim/es5-shim.js"></script>
+    <script src="bower_components/es5-shim/es5-sham.js"></script>
 <![endif]-->
 <script type="text/javascript" src="build/js/app.bundle.js"></script>
 </body>
