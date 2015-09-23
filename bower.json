@@ -13,6 +13,9 @@
   "license": "MIT",
   "dependencies": {
     "es5-shim": "~4.1.13",
-    "html5shiv": "~3.7.3"
+    "html5shiv": "~3.7.3",
+    "react": "~0.13.3",
+    "react-bootstrap": "~0.25.2",
+    "jquery-1.11.1": "~2.1.4"
   }
 }

@@ -1,13 +1,6 @@
 import React from 'react';
 import { Router, Route, Link, Redirect } from 'react-router';
-
-// import { Button } from 'react-bootstrap';
-
-var reactBootstrap = require("react-bootstrap")
-
-var Button = reactBootstrap.Button
-
-
+import { Button } from 'react-bootstrap';
 
 const buttonsInstance = (
     <Button>Default</Button>
