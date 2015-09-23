@@ -1,7 +1,7 @@
 // shivs for support IE8 and below
-import "es5-shim";
-import "es5-shim/es5-sham";
-import "html5shiv";
+// import "es5-shim";
+// import "es5-shim/es5-sham";
+// import "html5shiv";
 
 import React from "react";
 

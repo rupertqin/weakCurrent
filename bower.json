@@ -1,0 +1,18 @@
+{
+  "name": "weakCurrent",
+  "version": "0.0.1",
+  "homepage": "https://github.com/rupertqin/weakCurrent",
+  "authors": [
+    "Qin Xiang <rupert.qing@gmail.com>"
+  ],
+  "description": "weak current",
+  "keywords": [
+    "weak",
+    "current"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "es5-shim": "~4.1.13",
+    "html5shiv": "~3.7.3"
+  }
+}
