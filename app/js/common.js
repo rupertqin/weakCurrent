@@ -1,45 +1,47 @@
-import React from 'react/addons';
-import { Router, Route, Link } from 'react-router';
+import React from 'react';
+import { Router, Route, Link, Redirect } from 'react-router';
 
-import '../scss/common.scss';
-
-var { CSSTransitionGroup } = React.addons;
+import { Search } from './search.js';
 
 var App = React.createClass({
   render() {
-    var key = this.props.location.pathname;
-
     return (
       <div>
         <ul>
-          <li><Link to="/page1">Page 111</Link></li>
-          <li><Link to="/page2">Page 2</Link></li>
+          <li><Link to="/user/123">Bob</Link></li>
+          <li><Link to="/user/abc">Sally</Link></li>
         </ul>
-        <CSSTransitionGroup component="div" transitionName="example">
-          {React.cloneElement(this.props.children || <div />, { key: key })}
-        </CSSTransitionGroup>
+        {this.props.children}
       </div>
     );
   }
 });
 
-var Page1 = React.createClass({
+var User = React.createClass({
   render() {
+    var { userID } = this.props.params;
+
     return (
-      <div className="Image">
-        <h1>Page 1</h1>
-        <p><Link to="/page1" activeClassName="link-active">A link to page 1 should be active</Link>. Lorem ipsum dolor sit amet, consectetur adipisicing elit. <Link to="/page2" activeClassName="link-active">A link to page 2 should be inactive</Link>. Do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      <div className="User">
+        <h1>User id: {userID}</h1>
+        <ul>
+          <li><Link to={`/user/${userID}/tasks/foo`}>foo task</Link></li>
+          <li><Link to={`/user/${userID}/tasks/bar`}>bar task</Link></li>
+        </ul>
+        {this.props.children}
       </div>
     );
   }
 });
 
-var Page2 = React.createClass({
+var Task = React.createClass({
   render() {
+    var { userID, taskID } = this.props.params;
+
     return (
-      <div className="Image">
-        <h1>Page 2</h1>
-        <p>Consectetur adipisicing elit, sed do <Link to="/page2" activeClassName="link-active">a link to page 2 should also be active</Link> eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      <div className="Task">
+        <h2>User ID: {userID}</h2>
+        <h3>Task ID: {taskID}</h3>
       </div>
     );
   }
@@ -47,9 +49,11 @@ var Page2 = React.createClass({
 
 React.render((
   <Router>
-    <Route path="/" component={App}>
-      <Route path="page1" component={Page1} />
-      <Route path="page2" component={Page2} />
+    <Route path="/" component={Search}>
+      <Route path="user/:userID" component={User}>
+        <Route path="tasks/:taskID" component={Task} />
+        <Redirect from="todos/:taskID" to="/user/:userID/tasks/:taskID" />
+      </Route>
     </Route>
   </Router>
 ), document.getElementById('example'));
