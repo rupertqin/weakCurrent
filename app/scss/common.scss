@@ -40,9 +40,11 @@
     }
 }
 
-.navbar {
+.navbar.navbar-fixed-top.navbar-fixed-bottom{
     width: 300px;
     background: #999;
+    margin: 0;
+    position: fixed;
     .container {
         width: 100%;
         .nav-collapse, .nav-collapse.collapse {
