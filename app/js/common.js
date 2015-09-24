@@ -1,20 +1,22 @@
 import React from 'react';
 import { Router, Route, Link, Redirect } from 'react-router';
+import "../scss/common.scss";
 
 import { Search } from './search.js';
+import { Navbar } from './navbar.js';
 
 var App = React.createClass({
-  render() {
-    return (
-      <div>
-        <ul>
-          <li><Link to="/user/123">Bob</Link></li>
-          <li><Link to="/user/abc">Sally</Link></li>
-        </ul>
-        {this.props.children}
-      </div>
-    );
-  }
+
+    render() {
+        return (
+            <div className="wrapper">
+                <Navbar/>
+                <div className="main-content">
+                    {this.props.children}
+                </div>
+            </div>
+        );
+    }
 });
 
 var User = React.createClass({
@@ -48,12 +50,13 @@ var Task = React.createClass({
 });
 
 React.render((
-  <Router>
-    <Route path="/" component={Search}>
-      <Route path="user/:userID" component={User}>
-        <Route path="tasks/:taskID" component={Task} />
-        <Redirect from="todos/:taskID" to="/user/:userID/tasks/:taskID" />
-      </Route>
-    </Route>
-  </Router>
-), document.getElementById('example'));
+    <Router>
+        <Route path="/" component={App}>
+            <Route path="search" component={Search} />
+            <Route path="user/:userID" component={User}>
+                <Route path="tasks/:taskID" component={Task} />
+                <Redirect from="todos/:taskID" to="/user/:userID/tasks/:taskID" />
+            </Route>
+        </Route>
+    </Router>
+), document.getElementById('main'));

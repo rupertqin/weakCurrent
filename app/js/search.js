@@ -1,17 +1,15 @@
 import React from 'react';
 import { Router, Route, Link, Redirect } from 'react-router';
-import "../scss/common.scss";
 
-const buttonsInstance = (
-    <div>
-        <button className="btn btn-small btn-primary" type="button">Small button</button>
-        <button className="btn btn-small" type="button">Small button</button>
-    </div>
-
-);
 var Buttons = React.createClass({
     render() {
-        return  buttonsInstance
+        return  (
+            <div>
+                <button className="btn btn-success" type="button">搜索</button>
+                <button className="btn btn-success" type="button">新建</button>
+            </div>
+
+        )
     }
 })
 
@@ -23,15 +21,17 @@ var Search = React.createClass({
           <li><Link to="/user/123">Bob</Link></li>
           <li><Link to="/user/abc">Sally</Link></li>
         </ul>
-        <Buttons />
-        <img src="img/logo.jpg" />
+        <div>
+            <img src="img/logo.jpg" />
+        </div>
         <div className="input-prepend">
             <span className="add-on"><i className="icon-search"></i></span>
             <input className="span2" type="text" />
         </div>
         <div className="control-label">
-            <small> Email address </small>
+            <small>搜索项目名称、产品名称等</small>
         </div>
+        <Buttons />
         {this.props.children}
       </div>
     );
