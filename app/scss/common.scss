@@ -1,30 +1,38 @@
+#main {
+}
+
+.main-content {
+    text-align: center;
+    
+}
+
 .Image {
-  position: absolute;
-  height: 400px;
-  width: 400px;
+    position: absolute;
+    height: 400px;
+    width: 400px;
 }
 
 .example-enter {
-  opacity: 0.01;
-  transition: opacity .5s ease-in;
+    opacity: 0.01;
+    transition: opacity .5s ease-in;
 }
 
 .example-enter.example-enter-active {
-  opacity: 1;
+    opacity: 1;
 }
 
 .example-leave {
-  opacity: 1;
-  transition: opacity .5s ease-in;
+    opacity: 1;
+    transition: opacity .5s ease-in;
 }
 
 .example-leave.example-leave-active {
-  opacity: 0;
+    opacity: 0;
 }
 
 .link-active {
-  color: #bbbbbb;
-  text-decoration: none;
+    color: #bbbbbb;
+    text-decoration: none;
 }
 
 .btn {
@@ -59,6 +67,15 @@
 }
 
 .page-search {
-  text-align: center;
-  margin-top: 200px;
+    text-align: center;
+    margin-top: 200px;
+}
+
+.sidebar {
+    position: fixed;
+    width: inherit;
+    top: 0;
+    right: 0;
+    bottom: 0;
+
 }

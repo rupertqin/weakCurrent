@@ -1,5 +1,6 @@
 import React from 'react';
 import { Router, Route, Link, Redirect } from 'react-router';
+import { createHistory, useBasename } from 'history'
 
 class Navbar extends React.Component {
     constructor (props) {
@@ -34,32 +35,16 @@ class Navbar extends React.Component {
                             </button>
                             <div className="nav-collapse in collapse">
                                 <ul className="nav">
-                                    <li className="">
-                                        <a href="./index.html">Home</a>
-                                    </li>
-                                    <li className="">
-                                        <a href="./getting-started.html">Get started</a>
-                                    </li>
-                                    <li className="">
-                                        <a href="./scaffolding.html">Scaffolding</a>
-                                    </li>
-                                    <li className="active">
-                                        <a href="./base-css.html">Base CSS</a>
-                                    </li>
-                                    <li className="">
-                                        <a href="./components.html">Components</a>
-                                    </li>
-                                    <li className="">
-                                        <a href="./javascript.html">JavaScript</a>
-                                    </li>
-                                    <li className="">
-                                        <a href="./customize.html">Customize</a>
-                                    </li>
+                                    <li><Link to="/search">首页</Link></li>
+                                    <li><Link to="/user/123">我的方案</Link></li>
+                                    <li><Link to="/user/123">知识库</Link></li>
+                                    <li><Link to="/user/123">新闻中心</Link></li>
+                                    <li><Link to="/user/123">关于我们</Link></li>
                                 </ul>
                             </div>
                         </div>
                     </div>
-            </div>
+                </div>
             </div>
         );
     }
