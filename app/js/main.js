@@ -2,20 +2,23 @@ import React from 'react'
 import { Router, Route, Link, Redirect } from 'react-router'
 import { createHistory, useBasename } from 'history'
 
+
 const history = useBasename(createHistory)({
   basename: ''
 })
 
 
-
 import "../scss/common.scss"
+
+import { Data } from './data'
+
 
 import { Search } from './search'
 import { Navbar } from './navbar'
 import { Create } from './create'
-import { CreateSecurity } from './create_security.js'
+import { NoMatch } from './404'
 
-var App = React.createClass({
+const App = React.createClass({
 
     render() {
         return (
@@ -29,7 +32,7 @@ var App = React.createClass({
     }
 })
 
-var User = React.createClass({
+const User = React.createClass({
   render() {
     var { userID } = this.props.params;
 
@@ -46,7 +49,7 @@ var User = React.createClass({
   }
 });
 
-var Task = React.createClass({
+const Task = React.createClass({
   render() {
     var { userID, taskID } = this.props.params;
 
@@ -59,17 +62,47 @@ var Task = React.createClass({
   }
 });
 
-React.render((
-    <Router history={history}>
-        <Route path="/" component={App}>
-            <Route path="search" component={Search} />
-            <Route path="create" component={Create}>
-                <Route path="security" component={CreateSecurity} />
+
+
+// do not use history in IE
+const u = navigator.userAgent
+if (u.indexOf('Trident') > -1) {
+    React.render((
+        <Router>
+            <Route path="/" component={App}>
+                <Route path="search" component={Search} />
+                <Route path="create" component={Create}>
+                    <Route path="step/:stepID">
+                        <Route path="node/:nodeID" />
+                    </Route>
+                </Route>
+                <Route path="user/:userID" component={User}>
+                    <Route path="tasks/:taskID" component={Task} />
+                    <Redirect from="todos/:taskID" to="/user/:userID/tasks/:taskID" />
+                </Route>
             </Route>
-            <Route path="user/:userID" component={User}>
-                <Route path="tasks/:taskID" component={Task} />
-                <Redirect from="todos/:taskID" to="/user/:userID/tasks/:taskID" />
+        </Router>
+    ), document.getElementById('main'));
+
+} else {
+
+    React.render((
+        <Router>
+            <Route path="/" component={App}>
+                <Route path="search" component={Search} />
+                <Route path="create" component={Create}>
+                    <Route path="step/:stepID" component={Create}>
+                        <Route path="node/:nodeID" component={Create} />
+                    </Route>
+                    <Redirect from="step/:stepID" to="/create/step/:stepID/node/1" />
+                </Route>
+                <Route path="user/:userID" component={User}>
+                    <Route path="tasks/:taskID" component={Task} />
+                    <Redirect from="todos/:taskID" to="/user/:userID/tasks/:taskID" />
+                </Route>
+                <Route path="*" component={NoMatch}/>
             </Route>
-        </Route>
-    </Router>
-), document.getElementById('main'));
+        </Router>
+    ), document.getElementById('main'));
+}
+
