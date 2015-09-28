@@ -16,21 +16,10 @@ import { Data } from './data'
 import { Search } from './search'
 import { Navbar } from './navbar'
 import { Create } from './create'
+import { Sidebar } from './sidebar'
 import { NoMatch } from './404'
 
-const App = React.createClass({
 
-    render() {
-        return (
-            <div className="wrapper">
-                <Navbar/>
-                <div className="main-content clearfix">
-                    {this.props.children}
-                </div>
-            </div>  
-        );
-    }
-})
 
 const User = React.createClass({
   render() {
@@ -63,6 +52,20 @@ const Task = React.createClass({
 });
 
 
+class Step extends React.Component {
+    render() {
+        return (
+            <div>
+                {this.props.children && React.cloneElement(this.props.children, {
+                    arr: this.props.arr
+                })}
+
+          </div>
+        )
+    }
+}
+
+let ajaxData;
 
 // do not use history in IE
 const u = navigator.userAgent
@@ -85,24 +88,43 @@ if (u.indexOf('Trident') > -1) {
     ), document.getElementById('main'));
 
 } else {
+    // ajax get data
+    setTimeout(function(){
+        ajaxData = Data
+        const App = React.createClass({
 
-    React.render((
-        <Router>
-            <Route path="/" component={App}>
-                <Route path="search" component={Search} />
-                <Route path="create" component={Create}>
-                    <Route path="step/:stepID" component={Create}>
-                        <Route path="node/:nodeID" component={Create} />
+            render() {
+                return (
+                    <div className="wrapper">
+                        <Navbar/>
+                        <div className="main-content clearfix">
+                            {this.props.children && React.cloneElement(this.props.children, {
+                                arr: ajaxData
+                            })}
+                        </div>
+                    </div>  
+                );
+            }
+        })
+
+        React.render((
+            <Router>
+                <Route path="/" component={App}>
+                    <Route path="search" component={Search} />
+                    <Route path="create" component={Create}>
+                        <Route path="step/:stepID" component={Step}>
+                            <Route path="node/:nodeID" component={Sidebar} />
+                        </Route>
+                        <Redirect from="step/:stepID" to="/create/step/:stepID/node/1" />
                     </Route>
-                    <Redirect from="step/:stepID" to="/create/step/:stepID/node/1" />
+                    <Route path="user/:userID" component={User}>
+                        <Route path="tasks/:taskID" component={Task} />
+                        <Redirect from="todos/:taskID" to="/user/:userID/tasks/:taskID" />
+                    </Route>
+                    <Route path="*" component={NoMatch}/>
                 </Route>
-                <Route path="user/:userID" component={User}>
-                    <Route path="tasks/:taskID" component={Task} />
-                    <Redirect from="todos/:taskID" to="/user/:userID/tasks/:taskID" />
-                </Route>
-                <Route path="*" component={NoMatch}/>
-            </Route>
-        </Router>
-    ), document.getElementById('main'));
+            </Router>
+        ), document.getElementById('main'))
+    }, 300)
 }
 
