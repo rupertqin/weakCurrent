@@ -12,7 +12,7 @@ const Create = React.createClass({
             <div className={mainClassName}>
                 <div className="span9">
                     <div className="page-header">
-                        <h1>xxx 方案{stepID}{nodeID}</h1>
+                        <h1>xxx 方案</h1>
                     </div>
                     <div className="row-fluid">
 

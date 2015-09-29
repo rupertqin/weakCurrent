@@ -53,14 +53,17 @@
     background: #999;
     margin: 0;
     position: fixed;
-    .container {
-        width: 100%;
-        .nav-collapse, .nav-collapse.collapse {
-            height: auto;
-        }
-        .nav {
-            li {
-                float: none;
+    .navbar-inner {
+        height: 100%;
+        .container {
+            width: 100%;
+            .nav-collapse, .nav-collapse.collapse {
+                height: auto;
+            }
+            .nav {
+                li {
+                    float: none;
+                }
             }
         }
     }
@@ -77,5 +80,24 @@
     top: 0;
     right: 0;
     bottom: 0;
+    .navbar-inner {
+        height: 100%;
+        .bottom {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+        }
+        .items {
+            .control-label {
+                width: 60px;
+            }
+            .controls {
+                margin-left: 60px;
+                input {
+                    width: 60px;
+                }
+            }
+        }
+    }
 
 }

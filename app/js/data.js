@@ -2,30 +2,128 @@ const Data = {
     safeSys: [
         {
             name: "安防系统",
-            sidebar: "11111",
+            sidebar: [
+                {
+                    name: "类型",
+                    type: "radio",
+                    values: ["大楼", "小区"]
+                },
+                {
+                    name: "面积",
+                    type: "text",
+                    context: "<> m2"
+                },
+                {
+                    name: "楼层",
+                    type: "text",
+                    context: "<> 层"
+                }
+            ],
             cover: "img/cover.jpg"
         },
         {
             name: "安防系统",
-            sidebar: "22222",
+            sidebar: [
+                {
+                    name: "类型",
+                    type: "radio",
+                    values: ["大楼", "小区"]
+                },
+                {
+                    name: "面积",
+                    type: "text",
+                    context: "<> m2"
+                },
+                {
+                    name: "楼层",
+                    type: "text",
+                    context: "<> 层"
+                }
+            ],
             cover: "img/cover.jpg"
         },
         {
             name: "安防系统",
-            sidebar: "33333",
+            sidebar: [
+                {
+                    name: "类型",
+                    type: "radio",
+                    values: ["大楼", "小区"]
+                },
+                {
+                    name: "面积",
+                    type: "text",
+                    context: "<> m2"
+                },
+                {
+                    name: "楼层",
+                    type: "text",
+                    context: "<> 层"
+                }
+            ],
             cover: "img/cover.jpg"
         },
         {
             name: "安防系统",
-            sidebar: "4444444",
+            sidebar: [
+                {
+                    name: "类型",
+                    type: "radio",
+                    values: ["大楼", "小区"]
+                },
+                {
+                    name: "面积",
+                    type: "text",
+                    context: "<> m2"
+                },
+                {
+                    name: "楼层",
+                    type: "text",
+                    context: "<> 层"
+                }
+            ],
             cover: "img/cover.jpg"
         },
         {
             name: "安防系统",
-            cover: "img/cover.jpg"
+            sidebar: [
+                {
+                    name: "类型",
+                    type: "radio",
+                    values: ["大楼", "小区"]
+                },
+                {
+                    name: "面积",
+                    type: "text",
+                    context: "<> m2"
+                },
+                {
+                    name: "楼层",
+                    type: "text",
+                    context: "<> 层"
+                }
+            ],
+            cover: "img/cover.jpg",
         },
         {
             name: "安防系统",
+            sidebar: [
+                {
+                    name: "类型",
+                    type: "radio",
+                    values: ["大楼", "小区"]
+                },
+                {
+                    name: "面积",
+                    type: "text",
+                    context: "<> m2"
+                },
+                {
+                    name: "楼层",
+                    type: "text",
+                    context: "<> 层"
+                }
+            ],
             cover: "img/cover.jpg"
         }
     ],
@@ -37,7 +135,7 @@ const Data = {
                 {
                     name: "类型",
                     type: "radio",
-                    values: ["大楼", "小区"]
+                    values: ["大楼", "小区", "大匠"]
                 },
                 {
                     name: "面积",

@@ -17,10 +17,6 @@ var Search = React.createClass({
   render() {
     return (
       <div className="page-search">
-        <ul>
-          <li><Link to="/user/123">Bob</Link></li>
-          <li><Link to="/user/abc">Sally</Link></li>
-        </ul>
         <div>
             <img src="img/logo.jpg" />
         </div>

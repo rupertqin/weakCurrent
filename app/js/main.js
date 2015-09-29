@@ -1,5 +1,5 @@
 import React from 'react'
-import { Router, Route, Link, Redirect } from 'react-router'
+import { Router, Route, Link, IndexRoute, Redirect } from 'react-router'
 import { createHistory, useBasename } from 'history'
 
 
@@ -65,6 +65,11 @@ class Step extends React.Component {
     }
 }
 
+function redirectToChild(location, replaceState) {
+    const step = location.params.stepID ? location.params.stepID : "safeSys"
+    replaceState(null, '/create/step/' + step +'/node/1')
+}
+
 let ajaxData;
 
 // do not use history in IE
@@ -98,9 +103,7 @@ if (u.indexOf('Trident') > -1) {
                     <div className="wrapper">
                         <Navbar/>
                         <div className="main-content clearfix">
-                            {this.props.children && React.cloneElement(this.props.children, {
-                                arr: ajaxData
-                            })}
+                            {this.props.children && React.cloneElement(this.props.children, {arr: ajaxData })}
                         </div>
                     </div>  
                 );
@@ -112,11 +115,14 @@ if (u.indexOf('Trident') > -1) {
                 <Route path="/" component={App}>
                     <Route path="search" component={Search} />
                     <Route path="create" component={Create}>
+                        <IndexRoute onEnter={redirectToChild} />
                         <Route path="step/:stepID" component={Step}>
+                            <IndexRoute onEnter={redirectToChild} />
                             <Route path="node/:nodeID" component={Sidebar} />
                         </Route>
-                        <Redirect from="step/:stepID" to="/create/step/:stepID/node/1" />
                     </Route>
+                    
+
                     <Route path="user/:userID" component={User}>
                         <Route path="tasks/:taskID" component={Task} />
                         <Redirect from="todos/:taskID" to="/user/:userID/tasks/:taskID" />
