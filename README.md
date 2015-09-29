@@ -4,8 +4,8 @@
 
 ### server
 
-    webpack-dev-server
+    npm start
 
-### watch change
+### production
 
-    webpack -w
+    webpack -p
