@@ -55,12 +55,11 @@ const Task = React.createClass({
 class Step extends React.Component {
     render() {
         return (
-            <div>
+            <div className="span3">
                 {this.props.children && React.cloneElement(this.props.children, {
                     arr: this.props.arr
                 })}
-
-          </div>
+            </div>
         )
     }
 }

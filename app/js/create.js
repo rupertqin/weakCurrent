@@ -4,77 +4,44 @@ import { Router, Route, Link, Redirect } from 'react-router';
 const Create = React.createClass({
     render() {
         console.log(this.props.arr)
+        const { safeSys, watcher } = this.props.arr
         const { stepID, nodeID } = this.props.params
-        let show2 = "row-fluid "
-        if (stepID != "2") {
-            show2 += "hide"
-        }
+        const  mainClassName= "row-fluid show-grid step_" + stepID
+
         return (
-            <div className="row-fluid show-grid">
+            <div className={mainClassName}>
                 <div className="span9">
                     <div className="page-header">
                         <h1>xxx 方案{stepID}{nodeID}</h1>
                     </div>
                     <div className="row-fluid">
-                        <div className="span3">
-                            <Link to="/create/step/1/node/1">
-                                <img src="img/cover.jpg" />
-                                <button className="btn">安防系统</button>
-                            </Link>
-                        </div>
-                        <div className="span3">
-                            <Link to="/create/step/1/node/2">
-                                <img src="img/cover.jpg" />
-                                <button className="btn">安防系统</button>
-                            </Link>
-                        </div>
-                        <div className="span3">
-                            <Link to="/create/step/1/node/3">
-                                <img src="img/cover.jpg" />
-                                <button className="btn">安防系统</button>
-                            </Link>
-                        </div>
-                        <div className="span3">
-                            <Link to="/create/step/1/node/4">
-                                <img src="img/cover.jpg" />
-                                <button className="btn">安防系统</button>
-                            </Link>
-                        </div>
+
+                        {safeSys.map(function (node, i) {
+                            return (
+                                <div className="span3">
+                                    <Link to={`/create/step/1/node/${i+1}`}>
+                                        <img src={node.cover} />
+                                        <button className="btn">{node.name}</button>
+                                    </Link>
+                                </div>
+                            )
+                        })}
                     </div>
 
-
-                    <div className={show2}>
-                        <div className="span3">
-                            <Link to="/create/step/1/node/1">
-                                <img src="img/cover.jpg" />
-                                <button className="btn">安防系统</button>
-                            </Link>
-                        </div>
-                        <div className="span3">
-                            <Link to="/create/step/1/node/1">
-                                <img src="img/cover.jpg" />
-                                <button className="btn">安防系统</button>
-                            </Link>
-                        </div>
-                        <div className="span3">
-                            <Link to="/create/step/1/node/1">
-                                <img src="img/cover.jpg" />
-                                <button className="btn">安防系统</button>
-                            </Link>
-                        </div>
-                        <div className="span3">
-                            <Link to="/create/step/1/node/1">
-                                <img src="img/cover.jpg" />
-                                <button className="btn">安防系统</button>
-                            </Link>
-                        </div>
+                    <div className="row-fluid">
+                        {watcher.map(function (node, i) {
+                            return (
+                                <div className="span3">
+                                    <Link to={`/create/step/2/node/${i+1}`}>
+                                        <img src={node.cover} />
+                                        <button className="btn">{node.name}</button>
+                                    </Link>
+                                </div>
+                            )
+                        })}
                     </div>
                 </div>
-                <div className="span3">
-                    {this.props.children && React.cloneElement(this.props.children, {
-                        arr: this.props.arr
-                    })}
-                </div>
+                {this.props.children && React.cloneElement(this.props.children, {arr: this.props.arr })}
             </div>
         );
     }
