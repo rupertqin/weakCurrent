@@ -5,7 +5,7 @@ class Create extends React.Component {
     render() {
         const { safeSys, watcher, circuit, machinery } = this.props.data
         const { stepID, nodeID } = this.props.params
-        const  mainClassName= "row-fluid show-grid step_" + stepID
+        const  mainClassName= "row-fluid show-grid page-create step-" + stepID
 
         return (
             <div className={mainClassName}>
@@ -13,26 +13,27 @@ class Create extends React.Component {
                     <div className="page-header">
                         <h1>xxx 方案</h1>
                     </div>
-                    <div className="row-fluid">
-
+                    <div className="row-fluid row-step row-safeSys">
                         {safeSys.map(function (node, i) {
                             return (
                                 <div className="span3" key={i}>
-                                    <Link to={`/create/step/safeSys/node/${i+1}`}>
-                                        <img src={node.cover} />
-                                        <button className="btn">{node.name}</button>
+                                    <Link to={`/create/step/safeSys/node/${i+1}`} activeClassName="active">
+                                        <img src={node.cover} className="cover" />
+                                        <button className="btn" activeClassName="btn-success">{node.name}</button>
                                     </Link>
                                 </div>
                             )
                         })}
+                        <span className="icon-chevron-left"></span>
+                        <span className="icon-chevron-right"></span>
                     </div>
 
-                    <div className="row-fluid">
+                    <div className="row-fluid row-step row-watcher">
                         {watcher.map(function (node, i) {
                             return (
                                 <div className="span3" key={i}>
-                                    <Link to={`/create/step/watcher/node/${i+1}`}>
-                                        <img src={node.cover} />
+                                    <Link to={`/create/step/watcher/node/${i+1}`} activeClassName="active">
+                                        <img src={node.cover} className="cover" />
                                         <button className="btn">{node.name}</button>
                                     </Link>
                                 </div>
@@ -40,12 +41,12 @@ class Create extends React.Component {
                         })}
                     </div>
 
-                    <div className="row-fluid">
+                    <div className="row-fluid row-step row-circuit">
                         {circuit.map(function (node, i) {
                             return (
                                 <div className="span3" key={i}>
-                                    <Link to={`/create/step/circuit/node/${i+1}`}>
-                                        <img src={node.cover} />
+                                    <Link to={`/create/step/circuit/node/${i+1}`} activeClassName="active">
+                                        <img src={node.cover} className="cover" />
                                         <button className="btn">{node.name}</button>
                                     </Link>
                                 </div>
@@ -53,12 +54,12 @@ class Create extends React.Component {
                         })}
                     </div>
 
-                    <div className="row-fluid">
+                    <div className="row-fluid row-step row-machinery">
                         {machinery.map(function (node, i) {
                             return (
                                 <div className="span3" key={i}>
-                                    <Link to={`/create/step/machinery/node/${i+1}`}>
-                                        <img src={node.cover} />
+                                    <Link to={`/create/step/machinery/node/${i+1}`} activeClassName="active">
+                                        <img src={node.cover} className="cover" />
                                         <button className="btn">{node.name}</button>
                                     </Link>
                                 </div>

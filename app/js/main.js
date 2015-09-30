@@ -9,8 +9,6 @@ import { Create } from './create'
 import { Sidebar } from './sidebar'
 import { NoMatch } from './404'
 
-
-
 class User extends React.Component {
   render() {
     var { userID } = this.props.params;
@@ -46,7 +44,7 @@ class Step extends React.Component {
     render() {
         const { stepID } = this.props.params
         return (
-            <div className="span3">
+            <div className="span3 sidebar">
                 {this.props.children && React.cloneElement(this.props.children, {
                     data: this.props.data[stepID]
                 })}

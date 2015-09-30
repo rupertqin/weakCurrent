@@ -33,10 +33,10 @@ class Item extends React.Component {
                                     <div className="controls">
                                     {item.values.map(function (value, j) {
                                         return (
-                                            <span key={j}>
+                                            <label key={j}>
                                                 <input type="radio" name="optionsRadios" value="option1" />
                                                 <a className="btn" type="submit">{value}</a>
-                                            </span>
+                                            </label>
                                         )
                                     })}
                                     </div>
