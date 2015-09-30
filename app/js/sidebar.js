@@ -11,7 +11,6 @@ class Sidebar extends React.Component {
         const steps = ['safeSys', 'watcher', 'circuit', 'machinery']
     }
     render() {
-        console.log('sidebar: ', this.props.data, this.props.params)
         const { pathname } = this.props.location
         const { stepID, nodeID } = this.props.params
         const idx = this.state.steps.indexOf(stepID)

@@ -1,24 +1,17 @@
 import React from 'react'
 import { Router, Route, Link, IndexRoute, Redirect } from 'react-router'
 import { createHistory, useBasename } from 'history'
-
-
-const history = useBasename(createHistory)({
-  basename: ''
-})
-
-
 import "../scss/common.scss"
-
 import { Data } from './data'
-
-
 import { Search } from './search'
 import { Navbar } from './navbar'
 import { Create } from './create'
 import { Sidebar } from './sidebar'
 import { NoMatch } from './404'
 
+const history = useBasename(createHistory)({
+  basename: ''
+})
 
 
 const User = React.createClass({
@@ -70,46 +63,37 @@ function redirectToChild(location, replaceState) {
     replaceState(null, '/create/step/' + step +'/node/1')
 }
 
+
+
 let ajaxData;
+// ajax get data
+setTimeout(function(){
+    ajaxData = Data
+    const App = React.createClass({
 
-// do not use history in IE
-const u = navigator.userAgent
-if (u.indexOf('Trident') > -1) {
-    React.render((
-        <Router>
-            <Route path="/" component={App}>
-                <Route path="search" component={Search} />
-                <Route path="create" component={Create}>
-                    <Route path="step/:stepID">
-                        <Route path="node/:nodeID" />
-                    </Route>
-                </Route>
-                <Route path="user/:userID" component={User}>
-                    <Route path="tasks/:taskID" component={Task} />
-                    <Redirect from="todos/:taskID" to="/user/:userID/tasks/:taskID" />
-                </Route>
-            </Route>
-        </Router>
-    ), document.getElementById('main'));
+        render() {
+            return (
+                <div className="wrapper">
+                    <Navbar/>
+                    <div className="main-content clearfix">
+                        {this.props.children && React.cloneElement(this.props.children, {arr: ajaxData })}
+                    </div>
+                </div>  
+            );
+        }
+    })
 
-} else {
-    // ajax get data
-    setTimeout(function(){
-        ajaxData = Data
-        const App = React.createClass({
 
-            render() {
-                return (
-                    <div className="wrapper">
-                        <Navbar/>
-                        <div className="main-content clearfix">
-                            {this.props.children && React.cloneElement(this.props.children, {arr: ajaxData })}
-                        </div>
-                    </div>  
-                );
-            }
-        })
 
+    // do not use history in IE
+    const u = navigator.userAgent
+    if (false && u.indexOf('Trident') > -1) {
+        React.render((
+            <Router>
+                <MyRouters/>
+            </Router>
+        ), document.getElementById('main'))
+    } else {
         React.render((
             <Router>
                 <Route path="/" component={App}>
@@ -131,6 +115,7 @@ if (u.indexOf('Trident') > -1) {
                 </Route>
             </Router>
         ), document.getElementById('main'))
-    }, 300)
-}
+    }
+
+}, 100)
 

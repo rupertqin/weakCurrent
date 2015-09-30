@@ -3,7 +3,6 @@ import { Router, Route, Link, Redirect } from 'react-router';
 
 const Create = React.createClass({
     render() {
-        console.log(this.props.arr)
         const { safeSys, watcher, circuit, machinery } = this.props.arr
         const { stepID, nodeID } = this.props.params
         const  mainClassName= "row-fluid show-grid step_" + stepID

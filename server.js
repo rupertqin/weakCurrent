@@ -11,6 +11,10 @@ app.use(webpackDevMiddleware(webpack(WebpackConfig), {
   publicPath: '/build/js',
   stats: {
     colors: true
+  },
+  watchOptions: {
+    aggregateTimeout: 500,
+    poll: true
   }
 }))
 
