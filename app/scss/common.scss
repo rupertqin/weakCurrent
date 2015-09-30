@@ -1,3 +1,5 @@
+$green: #669a6a;
+
 #main {
 }
 
@@ -84,8 +86,9 @@
 .page-create {
     .row-step {
         width: 80%;
-        padding: 0 10%;
+        padding: 20px 10%;
         position: relative;
+        min-height: 100px;
         .icon-chevron-left {
             position: absolute;
             left: 2%;
@@ -100,6 +103,10 @@
         }
         .cover {
             display: none;
+            margin-bottom: 20px;
+        }
+        .arraw {
+            display: none;
         }
         a.active {
             .btn {
@@ -113,8 +120,12 @@
         $i: index($step-names, $name);
         &.step-#{$name} { 
             .row-#{$name} {
+                background: $green;
                 .cover {
                     display: inline-block;
+                }
+                .arraw {
+                    display: block;
                 }
             }
         }
