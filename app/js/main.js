@@ -14,7 +14,7 @@ const history = useBasename(createHistory)({
 })
 
 
-const User = React.createClass({
+class User extends React.Component {
   render() {
     var { userID } = this.props.params;
 
@@ -29,9 +29,9 @@ const User = React.createClass({
         </div>
     );
   }
-});
+}
 
-const Task = React.createClass({
+class Task extends React.Component {
   render() {
     var { userID, taskID } = this.props.params;
 
@@ -42,7 +42,7 @@ const Task = React.createClass({
         </div>
     );
   }
-});
+}
 
 
 class Step extends React.Component {
@@ -65,57 +65,65 @@ function redirectToChild(location, replaceState) {
 
 
 
-let ajaxData;
 // ajax get data
-setTimeout(function(){
-    ajaxData = Data
-    const App = React.createClass({
-
-        render() {
-            return (
-                <div className="wrapper">
-                    <Navbar/>
-                    <div className="main-content clearfix">
-                        {this.props.children && React.cloneElement(this.props.children, {arr: ajaxData })}
-                    </div>
-                </div>  
-            );
-        }
-    })
-
-
-
-    // do not use history in IE
-    const u = navigator.userAgent
-    if (false && u.indexOf('Trident') > -1) {
-        React.render((
-            <Router>
-                <MyRouters/>
-            </Router>
-        ), document.getElementById('main'))
-    } else {
-        React.render((
-            <Router>
-                <Route path="/" component={App}>
-                    <Route path="search" component={Search} />
-                    <Route path="create" component={Create}>
-                        <IndexRoute onEnter={redirectToChild} />
-                        <Route path="step/:stepID" component={Step}>
-                            <IndexRoute onEnter={redirectToChild} />
-                            <Route path="node/:nodeID" component={Sidebar} />
-                        </Route>
-                    </Route>
-                    
-
-                    <Route path="user/:userID" component={User}>
-                        <Route path="tasks/:taskID" component={Task} />
-                        <Redirect from="todos/:taskID" to="/user/:userID/tasks/:taskID" />
-                    </Route>
-                    <Route path="*" component={NoMatch}/>
-                </Route>
-            </Router>
-        ), document.getElementById('main'))
+class App extends React.Component {
+    constructor (props) {
+        super(props)
+        this.state = {}
     }
+    componentDidMount () {
+        setTimeout(function () {
+            this.setState({
+                data: Data
+            })
+        }.bind(this), 300)
+    }
+    render() {
+        if (!this.state.data) return null;
+        return (
+            <div className="wrapper">
+                <Navbar/>
+                <div className="main-content clearfix">
+                    {this.props.children && React.cloneElement(this.props.children, {arr: this.state.data })}
+                </div>
+            </div>  
+        )
+    }
+}
 
-}, 100)
+React.render((
+    <Router>
+        <Route path="/" component={App}>
+            <Route path="search" component={Search} />
+            <Route path="create" component={Create}>
+                <IndexRoute onEnter={redirectToChild} />
+                <Route path="step/:stepID" component={Step}>
+                    <IndexRoute onEnter={redirectToChild} />
+                    <Route path="node/:nodeID" component={Sidebar} />
+                </Route>
+            </Route>
+            
+
+            <Route path="user/:userID" component={User}>
+                <Route path="tasks/:taskID" component={Task} />
+                <Redirect from="todos/:taskID" to="/user/:userID/tasks/:taskID" />
+            </Route>
+            <Route path="*" component={NoMatch}/>
+        </Route>
+    </Router>
+), document.getElementById('main'))
+
+
+// do not use history in IE
+// const u = navigator.userAgent
+// if (false && u.indexOf('Trident') > -1) {
+//     React.render((
+//         <Router>
+//             <MyRouters/>
+//         </Router>
+//     ), document.getElementById('main'))
+// } else {
+    
+// }
+
 

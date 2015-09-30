@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router, Route, Link, Redirect } from 'react-router';
 
-const Create = React.createClass({
+class Create extends React.Component {
     render() {
         const { safeSys, watcher, circuit, machinery } = this.props.arr
         const { stepID, nodeID } = this.props.params
@@ -70,6 +70,6 @@ const Create = React.createClass({
             </div>
         );
     }
-});
+}
 
 export {Create}

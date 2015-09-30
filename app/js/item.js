@@ -19,6 +19,7 @@ class Item extends React.Component {
                                 <div className="control-group">
                                     <label className="control-label" for="inputWarning">{item.name}:</label>
                                     <div className="controls">
+                                        {item.name}
                                         <input type="text" id="inputWarning" />
                                     </div>
                                 </div>
