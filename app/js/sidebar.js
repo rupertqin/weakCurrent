@@ -5,14 +5,14 @@ import { Item } from './item';
 class Sidebar extends React.Component {
     constructor () {
         super()
-        this.state = { steps: ['safeSys', 'watcher', 'circuit', 'machinery'] }
+        this.state = { stepNames: ['safeSys', 'watcher', 'circuit', 'machinery'] }
     }
     render() {
         const { pathname } = this.props.location
         const { stepID, nodeID } = this.props.params
-        const idx = this.state.steps.indexOf(stepID)
-        const nextIdx = idx == this.state.steps.length-1 ? idx : idx+1
-        const nextPath = `/create/step/${this.state.steps[nextIdx]}`
+        const idx = this.state.stepNames.indexOf(stepID)
+        const nextIdx = idx == this.state.stepNames.length-1 ? idx : idx+1
+        const nextPath = `/create/step/${this.state.stepNames[nextIdx]}`
         const data = this.props.data[nodeID-1]
         return (
             <div className='sidebar'>

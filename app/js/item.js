@@ -4,11 +4,17 @@ import { Router, Route, Link, Redirect } from 'react-router';
 class Item extends React.Component {
     constructor () {
         super()
-        this.state = { steps: ['safeSys', 'watcher', 'circuit', 'machinery'] }
+    }
+    replaceWithInput (i, context) {
+        var html = context.replace('<>', '<input type="text" id="inputWarning' + i + '" />')
+        return (
+            <span dangerouslySetInnerHTML={{__html: html}} />
+        )
     }
     render() {
         if (this.props.items) {
             const items = this.props.items
+            var myInput = '<input type="text" />'
             return (
                 <div className='items form-horizontal'>
 
@@ -19,7 +25,7 @@ class Item extends React.Component {
                                 <div className="control-group" key={i}>
                                     <label className="control-label" htmlFor={`inputWarning${i}`}>{item.name}:</label>
                                     <div className="controls">
-                                        <input type="text" id={`inputWarning${i}`} />
+                                        {this.replaceWithInput(i , item.context)}
                                     </div>
                                 </div>
                             )
@@ -42,7 +48,7 @@ class Item extends React.Component {
                         }
                         return itemDom;
 
-                    })}
+                    }.bind(this))}
                 </div>
             )
         }
