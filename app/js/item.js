@@ -5,11 +5,9 @@ class Item extends React.Component {
     constructor () {
         super()
     }
-    replaceWithInput (i, context) {
+    replaceWithInput (context, i) {
         var html = context.replace('<>', '<input type="text" id="inputWarning' + i + '" />')
-        return (
-            <span dangerouslySetInnerHTML={{__html: html}} />
-        )
+        return {__html: html}
     }
     render() {
         if (this.props.items) {
@@ -24,8 +22,7 @@ class Item extends React.Component {
                             itemDom = (
                                 <div className="control-group" key={i}>
                                     <label className="control-label" htmlFor={`inputWarning${i}`}>{item.name}:</label>
-                                    <div className="controls">
-                                        {this.replaceWithInput(i , item.context)}
+                                    <div className="controls" dangerouslySetInnerHTML={this.replaceWithInput(item.context, i)}>
                                     </div>
                                 </div>
                             )

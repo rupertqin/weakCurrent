@@ -9,9 +9,6 @@ import { Create } from './create'
 import { Sidebar } from './sidebar'
 import { NoMatch } from './404'
 
-const history = useBasename(createHistory)({
-  basename: ''
-})
 
 
 class User extends React.Component {
