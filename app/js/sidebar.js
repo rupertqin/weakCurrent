@@ -7,9 +7,6 @@ class Sidebar extends React.Component {
         super()
         this.state = { steps: ['safeSys', 'watcher', 'circuit', 'machinery'] }
     }
-    gotoNext () {
-        const steps = ['safeSys', 'watcher', 'circuit', 'machinery']
-    }
     render() {
         const { pathname } = this.props.location
         const { stepID, nodeID } = this.props.params

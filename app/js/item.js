@@ -16,28 +16,27 @@ class Item extends React.Component {
                         let itemDom;
                         if (item.type == "text") {
                             itemDom = (
-                                <div className="control-group">
-                                    <label className="control-label" for="inputWarning">{item.name}:</label>
+                                <div className="control-group" key={i}>
+                                    <label className="control-label" htmlFor={`inputWarning${i}`}>{item.name}:</label>
                                     <div className="controls">
-                                        {item.name}
-                                        <input type="text" id="inputWarning" />
+                                        <input type="text" id={`inputWarning${i}`} />
                                     </div>
                                 </div>
                             )
                         } else {
                             itemDom = (
-                                <div className="control-group">
-                                    <label className="control-label" for="inputWarning">{item.name}:</label>
-                                    {item.values.map(function (value, i) {
+                                <div className="control-group" key={i}>
+                                    <label className="control-label">{item.name}:</label>
+                                    <div className="controls">
+                                    {item.values.map(function (value, j) {
                                         return (
-                                            <div className="controls">
-                                                <label className="radio">
-                                                  <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" />
-                                                  <a className="btn" type="submit">{value}</a>
-                                                </label>
-                                            </div>
+                                            <span key={j}>
+                                                <input type="radio" name="optionsRadios" value="option1" />
+                                                <a className="btn" type="submit">{value}</a>
+                                            </span>
                                         )
                                     })}
+                                    </div>
                                 </div>
                             )
                         }

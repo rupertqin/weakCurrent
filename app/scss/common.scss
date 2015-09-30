@@ -92,9 +92,15 @@
                 width: 60px;
             }
             .controls {
-                margin-left: 60px;
-                input {
+                margin-left: 70px;
+                text-align: left;
+                input[type=text] {
                     width: 60px;
+                }
+                input[type=radio] {
+                    height: 0;
+                    width: 0;
+                    overflow: hidden;
                 }
             }
         }

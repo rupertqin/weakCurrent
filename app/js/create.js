@@ -3,7 +3,7 @@ import { Router, Route, Link, Redirect } from 'react-router';
 
 class Create extends React.Component {
     render() {
-        const { safeSys, watcher, circuit, machinery } = this.props.arr
+        const { safeSys, watcher, circuit, machinery } = this.props.data
         const { stepID, nodeID } = this.props.params
         const  mainClassName= "row-fluid show-grid step_" + stepID
 
@@ -17,7 +17,7 @@ class Create extends React.Component {
 
                         {safeSys.map(function (node, i) {
                             return (
-                                <div className="span3">
+                                <div className="span3" key={i}>
                                     <Link to={`/create/step/safeSys/node/${i+1}`}>
                                         <img src={node.cover} />
                                         <button className="btn">{node.name}</button>
@@ -30,7 +30,7 @@ class Create extends React.Component {
                     <div className="row-fluid">
                         {watcher.map(function (node, i) {
                             return (
-                                <div className="span3">
+                                <div className="span3" key={i}>
                                     <Link to={`/create/step/watcher/node/${i+1}`}>
                                         <img src={node.cover} />
                                         <button className="btn">{node.name}</button>
@@ -43,7 +43,7 @@ class Create extends React.Component {
                     <div className="row-fluid">
                         {circuit.map(function (node, i) {
                             return (
-                                <div className="span3">
+                                <div className="span3" key={i}>
                                     <Link to={`/create/step/circuit/node/${i+1}`}>
                                         <img src={node.cover} />
                                         <button className="btn">{node.name}</button>
@@ -56,7 +56,7 @@ class Create extends React.Component {
                     <div className="row-fluid">
                         {machinery.map(function (node, i) {
                             return (
-                                <div className="span3">
+                                <div className="span3" key={i}>
                                     <Link to={`/create/step/machinery/node/${i+1}`}>
                                         <img src={node.cover} />
                                         <button className="btn">{node.name}</button>
@@ -66,7 +66,7 @@ class Create extends React.Component {
                         })}
                     </div>
                 </div>
-                {this.props.children && React.cloneElement(this.props.children, {arr: this.props.arr })}
+                {this.props.children && React.cloneElement(this.props.children, {data: this.props.data })}
             </div>
         );
     }

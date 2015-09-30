@@ -51,7 +51,7 @@ class Step extends React.Component {
         return (
             <div className="span3">
                 {this.props.children && React.cloneElement(this.props.children, {
-                    data: this.props.arr[stepID]
+                    data: this.props.data[stepID]
                 })}
             </div>
         )
@@ -65,13 +65,13 @@ function redirectToChild(location, replaceState) {
 
 
 
-// ajax get data
 class App extends React.Component {
     constructor (props) {
         super(props)
         this.state = {}
     }
     componentDidMount () {
+        // ajax get data
         setTimeout(function () {
             this.setState({
                 data: Data
@@ -79,12 +79,12 @@ class App extends React.Component {
         }.bind(this), 300)
     }
     render() {
-        if (!this.state.data) return null;
+        if (!this.state.data) return null
         return (
             <div className="wrapper">
                 <Navbar/>
                 <div className="main-content clearfix">
-                    {this.props.children && React.cloneElement(this.props.children, {arr: this.state.data })}
+                    {this.props.children && React.cloneElement(this.props.children, {data: this.state.data })}
                 </div>
             </div>  
         )
