@@ -3,6 +3,10 @@ $green: #669a6a;
 #main {
 }
 
+button:focus, button:active {
+    outline: 0!important;
+}
+
 .main-content {
     text-align: center;
     
@@ -77,6 +81,15 @@ $green: #669a6a;
         }
     }
 }
+.page-header {
+    text-align: left;
+    border-bottom: 1px solid #999;
+    overflow: hidden;
+    margin-bottom: 0;
+    h1 {
+        margin-left: 10%;
+    }
+}
 
 .page-search {
     text-align: center;
@@ -86,27 +99,28 @@ $green: #669a6a;
 .page-create {
     .row-step {
         width: 80%;
-        padding: 20px 10%;
+        padding: 50px 10%;
         position: relative;
-        min-height: 100px;
+        border-bottom: 1px solid #999;
         .icon-chevron-left {
             position: absolute;
             left: 2%;
             top: 45%;
-            font-style: 3em;
         }
         .icon-chevron-right {
             position: absolute;
             right: 2%;
             top: 45%;
-            font-style: 3em;
         }
         .cover {
             display: none;
             margin-bottom: 20px;
+            border-radius: 15px;
+            border: 3px solid #fff;
         }
         .arraw {
             display: none;
+            cursor: pointer;
         }
         a.active {
             .btn {
@@ -116,8 +130,13 @@ $green: #669a6a;
     }
 
     $step-names: safeSys, watcher, circuit, machinery;
-    @each $name in $step-names {
-        $i: index($step-names, $name);
+    @for $i from 1 through length($step-names) {
+        $name: nth($step-names, $i);
+        @if $i == 4 {
+            $next-name: $name;
+        } @else {
+            $next-name: nth($step-names, $i+1);
+        }
         &.step-#{$name} { 
             .row-#{$name} {
                 background: $green;
@@ -127,6 +146,9 @@ $green: #669a6a;
                 .arraw {
                     display: block;
                 }
+            }
+            .row-#{$next-name} ~ .row-step{
+                display: none;
             }
         }
     }
@@ -146,6 +168,9 @@ $green: #669a6a;
             position: absolute;
             bottom: 20px;
             width: 100%;
+            .last-step {
+                display: none;
+            }
         }
         .items {
             .control-label {
@@ -163,6 +188,7 @@ $green: #669a6a;
                         height: 0;
                         width: 0;
                         overflow: hidden;
+                        opacity: 0;
                         &:checked + a.btn {
                             @include btn-green;
                         }
@@ -173,4 +199,29 @@ $green: #669a6a;
         }
     }
 
+}
+
+.step-machinery {
+    .sidebar {
+        .bottom {
+            .last-step {
+                display: block;
+            }
+            .btn.next {
+                display: none;
+            }
+        }
+    }
+}
+
+.product {
+    background: #666;
+    .product-list {
+        width: 80%;
+        padding: 50px 10%;
+        > .span3 {
+            background: #fff;
+            border-radius: 15px;
+        }
+    }
 }

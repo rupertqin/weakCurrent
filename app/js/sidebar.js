@@ -20,6 +20,14 @@ class Sidebar extends React.Component {
                 <Item items={data.sidebar} />
                 <div className='bottom'>
                     <Link className='btn btn-success next' to={nextPath}>选择子模块</Link>
+                    <div className='last-step'>
+                        <div className='price'>
+                            <p>预估价格</p>
+                            <h4>99999元</h4>
+                        </div>
+                        <Link className='btn btn-success' to={nextPath}>保存方案</Link>
+                        <Link className='btn btn-success' query={{show: true}} to={pathname}>选择产品</Link>
+                    </div>
                 </div>
             </div>
         )
