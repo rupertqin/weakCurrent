@@ -28,8 +28,8 @@ class StepRow extends React.Component {
     render () {
         const stepName = this.props["step-name"]
         let rowClaName = "row-fluid row-step row-" + stepName
-        let leftClaName = "arraw icon-chevron-left"
-        let rightClaName = "arraw icon-chevron-right"
+        let leftClaName = "arrow left"
+        let rightClaName = "arrow right"
 
 
         if (this.props.boxes.length <= 4) {
@@ -55,9 +55,37 @@ class StepRow extends React.Component {
                         </div>
                     )
                 }.bind(this))}
-                <span className={leftClaName} onClick={this.prev.bind(this)}></span>
-                <span className={rightClaName} onClick={this.next.bind(this)}></span>
+                <span className={leftClaName} onClick={this.prev.bind(this)}>&lt;</span>
+                <span className={rightClaName} onClick={this.next.bind(this)}>&gt;</span>
             </div>
+        )
+    }
+}
+
+
+class AmountWidget extends React.Component {
+    constructor (props) {
+        super(props)
+        this.state = {
+            num: props.num
+        }
+    }
+    add () {
+        this.setState({num: ++this.state.num})
+    }
+    reduce () {
+        let num = --this.state.num <= 0 ? 0 : this.state.num
+        this.setState({num: num})
+    }
+    render () {
+        return (
+            <form>
+                <div className="input-prepend">
+                    <a className="btn btn-success" onClick={this.reduce.bind(this)}><i className="icon-minus icon-white"></i></a>
+                    <input type="text" value={this.state.num} readOnly={true}/>
+                    <a className="btn btn-success" onClick={this.add.bind(this)}><i className="icon-plus icon-white"></i></a>
+                </div>
+            </form>
         )
     }
 }
@@ -77,6 +105,7 @@ class Product extends React.Component {
                                         <h4>{product.name}</h4>
                                         <h4>{product.price}元</h4>
                                         <p>{product.description}</p>
+                                        <AmountWidget num={1}/>
                                     </div>
                                 )
                             })}
@@ -104,7 +133,7 @@ class Create extends React.Component {
                     <StepRow boxes={watcher} step-name="watcher"/>
                     <StepRow boxes={circuit} step-name="circuit"/>
                     <StepRow boxes={machinery} step-name="machinery"/>
-                    <Product machinery={machinery} show={location.query && location.query.show} showWhich={+nodeID-1}/>
+                    <Product machinery={machinery} show={location.query && location.query.showProduct} showWhich={+nodeID-1}/>
                 </div>
                 {this.props.children && React.cloneElement(this.props.children, {data: this.props.data })}
             </div>

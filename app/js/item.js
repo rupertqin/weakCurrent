@@ -6,6 +6,7 @@ class Item extends React.Component {
         super()
     }
     replaceWithInput (context, i) {
+        console.log(context)
         var html = context.replace('<>', '<input type="text" id="inputWarning' + i + '" />')
         return {__html: html}
     }

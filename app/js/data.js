@@ -4,25 +4,15 @@ const Data = {
             name: "安防系统",
             sidebar: [
                 {
-                    name: "类型",
+                    name: "楼宇类型",
                     type: "radio",
-                    values: ["大楼", "小区"]
-                },
-                {
-                    name: "面积",
-                    type: "text",
-                    context: "有<> m2"
-                },
-                {
-                    name: "楼层",
-                    type: "text",
-                    context: "<> 层"
+                    values: ["商城", "小区", "办公楼"]
                 }
             ],
             cover: "img/cover.jpg"
         },
         {
-            name: "安防系统",
+            name: "入侵报警系统",
             sidebar: [
                 {
                     name: "类型",
@@ -40,10 +30,10 @@ const Data = {
                     context: "<> 层"
                 }
             ],
-            cover: "img/cover.jpg"
+            cover: "img/cover-2.jpg"
         },
         {
-            name: "安防系统",
+            name: "出入口控制系统",
             sidebar: [
                 {
                     name: "类型",
@@ -61,10 +51,10 @@ const Data = {
                     context: "<> 层"
                 }
             ],
-            cover: "img/cover.jpg"
+            cover: "img/cover-3.jpg"
         },
         {
-            name: "安防系统",
+            name: "停车库（场）管理系统",
             sidebar: [
                 {
                     name: "类型",
@@ -82,10 +72,10 @@ const Data = {
                     context: "<> 层"
                 }
             ],
-            cover: "img/cover.jpg"
+            cover: "img/cover-4.jpg"
         },
         {
-            name: "安防系统",
+            name: "视频监控系统",
             sidebar: [
                 {
                     name: "类型",
@@ -133,11 +123,6 @@ const Data = {
             cover: "img/cover.jpg",
             sidebar: [
                 {
-                    name: "类型",
-                    type: "radio",
-                    values: ["大楼", "小区", "大匠"]
-                },
-                {
                     name: "面积",
                     type: "text",
                     context: "<> m2"
@@ -151,7 +136,7 @@ const Data = {
         },
         {
             name: "寻根",
-            cover: "img/cover.jpg",
+            cover: "img/cover-2.jpg",
             sidebar: [
                 {
                     name: "类型",
@@ -172,7 +157,7 @@ const Data = {
         },
         {
             name: "监控",
-            cover: "img/cover.jpg",
+            cover: "img/cover-3.jpg",
             sidebar: [
                 {
                     name: "类型",
@@ -193,7 +178,7 @@ const Data = {
         },
         {
             name: "监控",
-            cover: "img/cover.jpg",
+            cover: "img/cover-4.jpg",
             sidebar: [
                 {
                     name: "类型",
@@ -258,43 +243,23 @@ const Data = {
         },
         {
             name: "传输",
-            cover: "img/cover.jpg",
+            cover: "img/cover-2.jpg",
             sidebar: [
                 {
                     name: "类型",
                     type: "radio",
-                    values: ["大楼", "小区"]
-                },
-                {
-                    name: "面积",
-                    type: "text",
-                    context: "<> m2"
-                },
-                {
-                    name: "楼层",
-                    type: "text",
-                    context: "<> 层"
+                    values: ["线缆", "光端机"]
                 }
             ]
         },
         {
             name: "后端",
-            cover: "img/cover.jpg",
+            cover: "img/cover-3.jpg",
             sidebar: [
                 {
                     name: "类型",
                     type: "radio",
-                    values: ["大楼", "小区"]
-                },
-                {
-                    name: "面积",
-                    type: "text",
-                    context: "<> m2"
-                },
-                {
-                    name: "楼层",
-                    type: "text",
-                    context: "<> 层"
+                    values: ["显示器", "屏幕墙", "硬盘", "存储"]
                 }
             ]
         }
@@ -302,17 +267,17 @@ const Data = {
     machinery: [
         {
             name: "摄像机",
-            cover: "img/cover.jpg",
+            cover: "img/cover-4.jpg",
             sidebar: [
                 {
-                    name: "类型",
+                    name: "使用环境",
                     type: "radio",
-                    values: ["大楼", "小区"]
+                    values: ["室内", "室外"]
                 },
                 {
-                    name: "面积",
-                    type: "text",
-                    context: "<> m2"
+                    name: "传感器类型",
+                    type: "radio",
+                    values: ["CMOS", "CCD"]
                 },
                 {
                     name: "楼层",
@@ -345,23 +310,18 @@ const Data = {
             ]
         },
         {
-            name: "镜头",
-            cover: "img/cover.jpg",
+            name: "摄像机镜头",
+            cover: "img/cover-3.jpg",
             sidebar: [
                 {
-                    name: "类型",
+                    name: "焦距",
+                    type: "text",
+                    context: "<> mm"
+                },
+                {
+                    name: "光圈",
                     type: "radio",
-                    values: ["大楼", "小区"]
-                },
-                {
-                    name: "面积",
-                    type: "text",
-                    context: "<> m2"
-                },
-                {
-                    name: "楼层",
-                    type: "text",
-                    context: "<> 层"
+                    values: ["手动", "自动"]
                 }
             ],
             products: [
@@ -390,7 +350,7 @@ const Data = {
         },
         {
             name: "云台",
-            cover: "img/cover.jpg",
+            cover: "img/cover-2.jpg",
             sidebar: [
                 {
                     name: "类型",

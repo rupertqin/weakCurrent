@@ -26,7 +26,7 @@ class Sidebar extends React.Component {
                             <h4>99999元</h4>
                         </div>
                         <Link className='btn btn-success' to={nextPath}>保存方案</Link>
-                        <Link className='btn btn-success' query={{show: true}} to={pathname}>选择产品</Link>
+                        <Link className='btn btn-success' query={{showProduct: true}} to={pathname}>选择产品</Link>
                     </div>
                 </div>
             </div>
