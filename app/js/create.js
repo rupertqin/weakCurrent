@@ -55,8 +55,9 @@ class StepRow extends React.Component {
                         </div>
                     )
                 }.bind(this))}
-                <span className={`arrow left ${leftActive} ${hide}`} onClick={this.prev.bind(this)}>&lt;</span>
-                <span className={`arrow right ${rightActive} ${hide}`} onClick={this.next.bind(this)}>&gt;</span>
+                <span className={`arrow fa fa-angle-left left ${leftActive} ${hide}`} onClick={this.prev.bind(this)}></span>
+                <span className={`arrow fa fa-angle-right right ${rightActive} ${hide}`} onClick={this.next.bind(this)}></span>
+                <span className={`arrow fa fa-angle-down`}></span>
             </div>
         )
     }

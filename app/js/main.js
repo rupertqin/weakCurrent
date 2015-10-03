@@ -1,7 +1,9 @@
 import React from 'react'
 import { Router, Route, Link, IndexRoute, Redirect } from 'react-router'
 import { createHistory, useBasename } from 'history'
+
 import "../scss/common.scss"
+
 import { Data } from './data'
 import { Search } from './search'
 import { Navbar } from './navbar'

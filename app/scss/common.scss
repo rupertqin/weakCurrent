@@ -126,16 +126,6 @@ button:focus, button:active {
         position: relative;
         border-bottom: 1px solid #999;
         background: #eee;
-        .arrow.left {
-            position: absolute;
-            left: 2%;
-            top: 45%;
-        }
-        .arrow.right {
-            position: absolute;
-            right: 2%;
-            top: 45%;
-        }
         .cover {
             display: none;
             margin: 0 auto 20px;
@@ -147,7 +137,25 @@ button:focus, button:active {
             color: $green;
             opacity: 0.5;
             cursor: default;
+            top: 50%;
+            margin-top: -2.5rem; 
             user-select: none;
+            &.left {
+                position: absolute;
+                left: 2%;
+            }
+            &.right {
+                position: absolute;
+                right: 2%;
+            }
+            &.fa-angle-down {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                color: $green!important;
+                margin-top: -1rem;
+            }
         }
         a.active {
             .btn {
@@ -167,14 +175,10 @@ button:focus, button:active {
         &.step-#{$name} { 
             .row-#{$name} {
                 background: $green;
-                margin-bottom: 30px;
-                &:before {
-                    content: '∨';
-                    position: absolute;
-                    bottom: -25px;
-                    left: 50%;
-                    font-size: 2em;
-                    color: $green;
+                margin-bottom: 50px;
+                padding: 30px 10%;
+                .fa-angle-down {
+                    display: block;
                 }
                 .cover {
                     display: block;

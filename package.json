@@ -32,6 +32,7 @@
     "webpack-dev-middleware": "^1.2.0"
   },
   "dependencies": {
+    "font-awesome": "^4.4.0",
     "history": "^1.11.0"
   }
 }
