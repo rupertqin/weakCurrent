@@ -72,11 +72,16 @@ button:focus, button:active {
     position: fixed;
     .navbar-inner {
         height: 100%;
-        background: #666;
+        background: #595757;
+        padding: 0;
         .container {
             width: 100%;
             .nav-collapse, .nav-collapse.collapse {
                 height: auto;
+            }
+            .logo {
+                margin: 50px auto;
+                text-align: center;
             }
             .nav {
                 width: 100%;
@@ -86,7 +91,10 @@ button:focus, button:active {
                         text-shadow: none;
                         color: #fff;
                         padding: 20px 30px;
-                        &.active {
+                        border-radius: 0;
+                        border-bottom: 1px solid #999;
+                        margin: 0;
+                        &.active, &:hover {
                             background: #ddd;
                             color: #666;
                         }

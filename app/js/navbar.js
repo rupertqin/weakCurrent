@@ -33,6 +33,9 @@ class Navbar extends React.Component {
                             <button onClick={this.handleClick.bind(this)} type="button" className="btn">
                                 <i className="icon-remove"></i>
                             </button>
+                            <div className="logo">
+                                <img src="img/logo-s.jpg" />
+                            </div>
                             <div className="nav-collapse in collapse">
                                 <ul className="nav">
                                     <li><Link to="/search" activeClassName="active">首页</Link></li>
