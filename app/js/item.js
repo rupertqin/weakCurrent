@@ -6,14 +6,12 @@ class Item extends React.Component {
         super()
     }
     replaceWithInput (context, i) {
-        console.log(context)
         var html = context.replace('<>', '<input type="text" id="inputWarning' + i + '" />')
         return {__html: html}
     }
     render() {
         if (this.props.items) {
             const items = this.props.items
-            var myInput = '<input type="text" />'
             return (
                 <div className='items form-horizontal'>
 
@@ -35,7 +33,7 @@ class Item extends React.Component {
                                     {item.values.map(function (value, j) {
                                         return (
                                             <label key={j}>
-                                                <input type="radio" name="optionsRadios" value="option1" />
+                                                <input type="radio" name={`optionsRadios${i}`} value="option1" />
                                                 <a className="btn" type="submit">{value}</a>
                                             </label>
                                         )

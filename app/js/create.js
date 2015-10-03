@@ -27,24 +27,24 @@ class StepRow extends React.Component {
     }
     render () {
         const stepName = this.props["step-name"]
-        let rowClaName = "row-fluid row-step row-" + stepName
-        let leftClaName = "arrow left"
-        let rightClaName = "arrow right"
+        let leftActive = ''
+        let rightActive = ''
+        let hide = ''
 
 
         if (this.props.boxes.length <= 4) {
-            leftClaName += " hidden"
-            rightClaName += " hidden"
+            hide = " hidden "
+            hide = " hidden "
         } else {
-            if (this.state.startIdx == 0) {
-                leftClaName += " hidden"
+            if (this.state.startIdx > 0) {
+                leftActive = " active "
             } 
-            if (this.state.startIdx + 4 == this.props.boxes.length) {
-                rightClaName += " hidden"
+            if (this.state.startIdx + 4 < this.props.boxes.length ) {
+                rightActive = " active "
             }
         }
         return (
-            <div className={rowClaName}>
+            <div className={`row-fluid row-step row-${stepName}`}>
                 {this.state.shownBoxes.map(function (node, i) {
                     return (
                         <div className="span3" key={i}>
@@ -55,8 +55,8 @@ class StepRow extends React.Component {
                         </div>
                     )
                 }.bind(this))}
-                <span className={leftClaName} onClick={this.prev.bind(this)}>&lt;</span>
-                <span className={rightClaName} onClick={this.next.bind(this)}>&gt;</span>
+                <span className={`arrow left ${leftActive} ${hide}`} onClick={this.prev.bind(this)}>&lt;</span>
+                <span className={`arrow right ${rightActive} ${hide}`} onClick={this.next.bind(this)}>&gt;</span>
             </div>
         )
     }
