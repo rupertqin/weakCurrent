@@ -13,7 +13,7 @@ class Item extends React.Component {
         if (this.props.items) {
             const items = this.props.items
             return (
-                <div className='items form-horizontal'>
+                <form className='items form-horizontal'>
 
                     {this.props.items.map(function (item, i) {
                         let itemDom;
@@ -45,7 +45,7 @@ class Item extends React.Component {
                         return itemDom;
 
                     }.bind(this))}
-                </div>
+                </form>
             )
         }
     }

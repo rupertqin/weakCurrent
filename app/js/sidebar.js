@@ -9,7 +9,6 @@ class Sidebar extends React.Component {
     }
     render() {
         const { pathname } = this.props.location
-        console.log(pathname)
         const { stepID, nodeID } = this.props.params
         const idx = this.state.stepNames.indexOf(stepID)
         const nextIdx = idx == this.state.stepNames.length-1 ? idx : idx+1
