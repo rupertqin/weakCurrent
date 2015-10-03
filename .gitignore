@@ -3,3 +3,4 @@ node_modules/
 .sass-cache/
 doc/
 npm-debug.log
+.vagrant/
