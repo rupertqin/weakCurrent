@@ -295,19 +295,19 @@ const Data = {
                 },{
                     name: "监控摄像头红外夜视监控器",
                     price: 9999,
-                    num: 1,
+                    num: 3,
                     cover: "img/camera.jpg",
                     description: "1080P 480TVL CMOS 1/4枪式摄像机 数字摄像机 一体机 一般亮度 DC 驱动 C接口 DC12V 高速"
                 },{
                     name: "监控摄像头红外夜视监控器",
                     price: 9999,
-                    num: 1,
+                    num: 4,
                     cover: "img/camera.jpg",
                     description: "1080P 480TVL CMOS 1/4枪式摄像机 数字摄像机 一体机 一般亮度 DC 驱动 C接口 DC12V 高速"
                 },{
                     name: "监控摄像头红外夜视监控器",
                     price: 9999,
-                    num: 1,
+                    num: 6,
                     cover: "img/camera.jpg",
                     description: "1080P 480TVL CMOS 1/4枪式摄像机 数字摄像机 一体机 一般亮度 DC 驱动 C接口 DC12V 高速"
                 }

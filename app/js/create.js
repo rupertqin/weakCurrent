@@ -1,5 +1,6 @@
-import React from 'react';
-import { Router, Route, Link, Redirect } from 'react-router';
+import React from 'react'
+import { Router, Route, Link, Redirect } from 'react-router'
+import _ from 'lodash'
 
 class StepRow extends React.Component {
     constructor (props) {
@@ -64,34 +65,64 @@ class StepRow extends React.Component {
 }
 
 
-class AmountWidget extends React.Component {
+class ProductBox extends React.Component {
     constructor (props) {
         super(props)
         this.state = {
-            num: props.num
+            num: this.props.product.num
         }
     }
+    broadcast () {
+        this.props.product.num = this.state.num
+        this.props.sumupPrice()
+        Commu.el.dispatchEvent(Commu.event)
+    }
     add () {
-        this.setState({num: ++this.state.num})
+        let num = ++this.state.num
+        this.setState({num: num})
+        this.broadcast()
     }
     reduce () {
-        let num = --this.state.num <= 0 ? 0 : this.state.num
+        if (this.state.num <= 0) 
+            return
+        let num = --this.state.num
         this.setState({num: num})
+        this.broadcast()
     }
     render () {
         return (
-            <form>
-                <div className="input-prepend">
-                    <a className="btn btn-success" onClick={this.reduce.bind(this)}><i className="icon-minus icon-white"></i></a>
-                    <input type="text" value={this.state.num} readOnly={true}/>
-                    <a className="btn btn-success" onClick={this.add.bind(this)}><i className="icon-plus icon-white"></i></a>
-                </div>
-            </form>
+            <div className="span3">
+                <img src={this.props.product.cover} className="cover" />
+                <h4>{this.props.product.name}</h4>
+                <h4>{this.props.product.price}元</h4>
+                <p>{this.props.product.description}</p>
+                <form>
+                    <div className="input-prepend">
+                        <a className="btn btn-success" onClick={this.reduce.bind(this)}><i className="icon-minus icon-white"></i></a>
+                        <input type="text" value={this.state.num} readOnly={true}/>
+                        <a className="btn btn-success" onClick={this.add.bind(this)}><i className="icon-plus icon-white"></i></a>
+                    </div>
+                </form>
+            </div>
         )
     }
 }
 
 class Product extends React.Component {
+    constructor (props) {
+        super(props)
+        this.handleSumupPrice()
+        this.state = {
+
+        }
+    }
+    handleSumupPrice () {
+        Commu.price = this.props.machinery.reduce(function (sumup, onemach) {
+            return sumup + onemach.products.reduce(function (subSumup, product) {
+                return subSumup + product.price * product.num
+            }, 0)
+        }, 0)
+    }
     render() {
         let hideClaN = this.props.show ? '' : 'hide'
         return (
@@ -101,15 +132,9 @@ class Product extends React.Component {
                         <div className={`row-fluid show-grid product-list ${this.props.showWhich != j ? "hide" : ""}`} key={j}>
                             {onemach.products.map(function (product, i) {
                                 return (
-                                    <div className="span3" key={i}>
-                                        <img src={product.cover} className="cover" />
-                                        <h4>{product.name}</h4>
-                                        <h4>{product.price}元</h4>
-                                        <p>{product.description}</p>
-                                        <AmountWidget num={1}/>
-                                    </div>
+                                    <ProductBox key={i} product={product} data={this.props.machinery} sumupPrice={this.handleSumupPrice.bind(this)}/>
                                 )
-                            })}
+                            }.bind(this))}
                         </div>
                     )
                 }.bind(this))}

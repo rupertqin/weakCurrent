@@ -11,6 +11,13 @@ import { Create } from './create'
 import { Sidebar } from './sidebar'
 import { NoMatch } from './404'
 
+// Global communicate subscript/dispac
+window.Commu = {
+    price: 0,
+    el: document.createElement('div'),
+    event: new Event('compuPrice')
+}
+
 class User extends React.Component {
   render() {
     var { userID } = this.props.params;
@@ -70,8 +77,9 @@ class App extends React.Component {
     componentDidMount () {
         // ajax get data
         setTimeout(function () {
+            window.Data = Data
             this.setState({
-                data: Data
+                data: window.Data
             })
         }.bind(this), 300)
     }

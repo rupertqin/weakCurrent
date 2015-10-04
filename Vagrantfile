@@ -69,5 +69,6 @@ Vagrant.configure(2) do |config|
   #   sudo apt-get update
   #   sudo apt-get install -y apache2
   # SHELL
-  config.vm.synced_folder ".", "/vagrant/weakCurrent", rsync__exclude: [".git/", "node_modules/"]
+  config.vm.synced_folder ".", "/vagrant", 
+    rsync__exclude: [".git/", "node_modules/"]
 end

@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "font-awesome": "^4.4.0",
-    "history": "^1.11.0"
+    "history": "^1.11.0",
+    "lodash": "^3.10.1"
   }
 }
