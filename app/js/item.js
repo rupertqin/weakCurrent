@@ -6,14 +6,14 @@ class Item extends React.Component {
         super()
     }
     replaceWithInput (context, i) {
-        var html = context.replace('<>', '<input type="text" id="inputWarning' + i + '" />')
+        var html = context.replace('<>', '<input type="text" value="" id="inputWarning' + i + '" />')
         return {__html: html}
     }
     render() {
         if (this.props.items) {
             const items = this.props.items
             return (
-                <form className='items form-horizontal'>
+                <form className='items form-horizontal' key={Math.random()}>
 
                     {this.props.items.map(function (item, i) {
                         let itemDom;
