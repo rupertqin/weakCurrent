@@ -28,6 +28,8 @@ Vagrant.configure(2) do |config|
   # using a specific IP.
   # config.vm.network "private_network", ip: "192.168.33.10"
 
+  config.vm.network "private_network", type: "dhcp"
+
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
   # your network.
@@ -69,6 +71,6 @@ Vagrant.configure(2) do |config|
   #   sudo apt-get update
   #   sudo apt-get install -y apache2
   # SHELL
-  config.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__auto: true,
-    rsync__exclude: [".git/", "node_modules/"]
+  config.vm.synced_folder ".", "/vagrant", type: "nfs",
+    nfs__exclude: [".git/", "node_modules/"]
 end

@@ -42,7 +42,7 @@ class Navbar extends React.Component {
                                     <li><Link to="/">我的方案</Link></li>
                                     <li><Link to="/">知识库</Link></li>
                                     <li><Link to="/">新闻中心</Link></li>
-                                    <li><Link to="/use">关于我们</Link></li>
+                                    <li><Link to="/">关于我们</Link></li>
                                 </ul>
                             </div>
                         </div>
