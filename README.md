@@ -8,4 +8,4 @@
 
 ### production
 
-    webpack -p
+    npm run build
