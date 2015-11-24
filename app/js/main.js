@@ -6,6 +6,7 @@ import "../scss/common.scss"
 
 import { Data } from './data'
 import { Search } from './search'
+import { Reg } from './reg'
 import { Navbar } from './navbar'
 import { Create } from './create'
 import { Sidebar } from './sidebar'
@@ -100,6 +101,7 @@ React.render((
     <Router>
         <Route path="/" component={App}>
             <Route path="search" component={Search} />
+            <Route path="reg" component={Reg} />
             <Route path="create" component={Create}>
                 <IndexRoute onEnter={redirectToChild} />
                 <Route path="step/:stepID" component={Step}>
