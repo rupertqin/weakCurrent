@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Router, Route, Link, Redirect } from 'react-router';
 
 class Reg extends React.Component {
