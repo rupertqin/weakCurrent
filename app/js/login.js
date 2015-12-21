@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Router, Route, Link, Redirect } from 'react-router';
 
-class Reg extends React.Component {
+class Login extends React.Component {
     constructor () {
         super()
     }
@@ -10,23 +10,18 @@ class Reg extends React.Component {
         const items = this.props.items
         return (
             <form className="form-horizontal box">
-                <h3>新用户注册</h3>
+                <h3>登录</h3>
                 <div className="control-group">
                     <label className="control-label" htmlFor="inputEmail">用户名：</label>
                     <div className="controls">
-                        <input type="text" id="inputEmail" placeholder="邮箱/手机" />
+                        <input type="text" id="inputEmail" placeholder="用户名" />
                     </div>
                 </div>
                 <div className="control-group">
-                    <label className="control-label" htmlFor="inputPassword">登录密码：</label>
+                    <label className="control-label" htmlFor="inputPassword">密码：</label>
                     <div className="controls">
-                        <input type="password" id="inputPassword" />
-                    </div>
-                </div>
-                <div className="control-group">
-                    <label className="control-label" htmlFor="inputPassword">重复密码：</label>
-                    <div className="controls">
-                        <input type="password" id="inputPassword" />
+                        <input type="password" id="inputPassword" placeholder="密码" />
+                        <Link to={`/forget`}>忘记密码</Link>
                     </div>
                 </div>
                 <div className="control-group">
@@ -38,8 +33,7 @@ class Reg extends React.Component {
                 </div>
                 <div className="control-group">
                     <div className="controls">
-                        <button type="submit" className="btn btn-success">注册</button>
-                        <button type="reset" className="btn btn-success">重置</button>
+                        <button type="submit" className="btn btn-success">登录</button>
                     </div>
                 </div>
             </form> 
@@ -47,5 +41,5 @@ class Reg extends React.Component {
     }
 }
 
-export default Reg
+export default {Login}
 
