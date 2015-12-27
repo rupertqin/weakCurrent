@@ -39,7 +39,7 @@ class Navbar extends React.Component {
                             <div className="nav-collapse in collapse">
                                 <ul className="nav">
                                     <li><Link to="/search" activeClassName="active">首页</Link></li>
-                                    <li><Link to="/">我的方案</Link></li>
+                                    <li><Link to="/cases">我的方案</Link></li>
                                     <li><Link to="/">知识库</Link></li>
                                     <li><Link to="/">新闻中心</Link></li>
                                     <li><Link to="/">关于我们</Link></li>

@@ -59,10 +59,16 @@ button:focus, button:active {
 
 .open-menu.navbar {
     background: none;
+    right: auto;
     .btn-navbar {
-        display: block;
+        display: inline-block;
         float: left;
     }
+}
+
+h1 {
+    color: #51a351;
+    font-size: 20px;
 }
 
 .navbar.navbar-fixed-top.navbar-fixed-bottom{
@@ -293,8 +299,9 @@ button:focus, button:active {
     }
 }
 
+header {
 
-
+}
 
 
 

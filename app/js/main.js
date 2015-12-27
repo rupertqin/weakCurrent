@@ -8,6 +8,7 @@ import { Data } from './data'
 import { Search } from './search'
 import { Login } from './login'
 import Reg from './reg'
+import Cases from './cases'
 import { Navbar } from './navbar'
 import { Create } from './create'
 import { Sidebar } from './sidebar'
@@ -104,6 +105,7 @@ React.render((
             <Route path="search" component={Search} />
             <Route path="login" component={Login} />
             <Route path="reg" component={Reg} />
+            <Route path="cases" component={Cases} />
             <Route path="create" component={Create}>
                 <IndexRoute onEnter={redirectToChild} />
                 <Route path="step/:stepID" component={Step}>
