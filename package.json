@@ -35,7 +35,7 @@
     "style-loader": "^0.12.4",
     "webpack": "^1.12.2",
     "classnames": "^2.1.2",
-    "mockjs": "^0.1.10"
+    "mockjs": "^0.1.10",
     "webpack-dev-middleware": "^1.2.0"
   },
   "dependencies": {
