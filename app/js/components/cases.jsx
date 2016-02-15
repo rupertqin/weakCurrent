@@ -2,22 +2,21 @@ import React from 'react';
 import { Router, Route, Link, Redirect } from 'react-router';
 import _ from 'lodash'
 
+import Request from '../mod/request'
+
 class Box extends React.Component {
-    constructor () {
-        super()
-    }
+    // constructor () {
+    //     super()
+    // }
     render() {
         return (
             <div className="box">
-                <h3>p安防系统</h3>
-                <p>
-                    1080P 480TVL<br/>
-                    CMOS  1/4枪式摄像机<br/>
-                    数字摄像机 一体机<br/>
-                    一般亮度 DC驱动<br/>
-                    C 接口 DC12V高速
-                </p>
-                <span>9999元</span>
+                <h3>{this.props.data.name}</h3>
+                <ul>
+                    {this.props.data.descriptions.map((des,i) => <li key={i}>{des}</li> )} 
+
+                </ul>
+                <span className="price">{this.props.data.price}元</span>
             </div>
         )
     }
@@ -28,19 +27,20 @@ class Case extends React.Component {
         super()
     }
     render() {
+        const data = this.props.data
         return (
             <div className="row">
-                <h2>xx楼宇设计方案</h2>
+                <h2>{this.props.data.name}</h2>
                 <div className="scroll">
-                    {_.range(8).map((node, i) => <Box></Box> )}
+                    {this.props.data.systems.map((sy,i) => <Box key={i} data={sy}></Box> )}
                 </div>
                 <div className="board">
                     <h4>描述</h4>
-                    <p className="des">建设xx楼宇项目，包含xx系统、xx系统等</p>
-                    <p className="price">预估价格<br/>9999元</p>
-                    <div>
+                    <p className="des">{this.props.data.description}</p>
+                    <div className="bottom">
+                        <p className="price">预估价格<br/>{this.props.data.price}元</p>
                         <button className="btn btn-success">编辑</button>
-                        <button className="btn btn-success">生成文书</button>
+                        <Link to={`/doc-generation/${this.props.data.id}/`} className="btn btn-success">生成文书</Link>
                     </div>
                 </div>
             </div>
@@ -49,10 +49,23 @@ class Case extends React.Component {
 }
 
 class Cases extends React.Component {
-    constructor () {
-        super()
+    constructor (props) {
+        super(props)
+        this.state = {}
+    }
+    componentDidMount () {
+        // ajax get data
+        setTimeout(()=> {
+            let data = Request.getCasesData()
+            console.log(data)
+            this.setState({
+                cases: data.cases
+            })
+        }, 300)
     }
     render() {
+        if (!this.state.cases) return null
+
         return (
             <div className="page-cases"> 
                 <header className="row-fluid">
@@ -67,7 +80,7 @@ class Cases extends React.Component {
                             </button>
                         </div>
                     </form> 
-                    {_.range(3).map((node, i) => <Case></Case> )}
+                    {this.state.cases.map((cs,i) => <Case key={i} data={cs}></Case> )}
                 </div> 
             </div> 
         )

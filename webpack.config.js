@@ -1,7 +1,7 @@
 module.exports = {
     // entry: "./public/js/common.js",
     entry: {
-        app: ["./app/js/main.js"]
+        app: ["./app/js/main.jsx"]
     },
     output: {
         path: __dirname + '/public/build/js/',

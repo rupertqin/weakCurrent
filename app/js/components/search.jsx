@@ -25,7 +25,7 @@ var Search = React.createClass({
             <input className="span2" type="text" />
         </div>
         <div className="control-label">
-            <small>搜索项目名称、产品名称等444</small>
+            <small>搜索项目名称、产品名称等</small>
         </div>
         <Buttons />
         {this.props.children}

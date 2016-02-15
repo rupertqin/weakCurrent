@@ -1,6 +1,6 @@
 import React from 'react';
 import { Router, Route, Link, Redirect } from 'react-router';
-import { Item } from './item';
+import { Item } from './item.jsx';
 
 class Sidebar extends React.Component {
     constructor () {
@@ -16,7 +16,7 @@ class Sidebar extends React.Component {
         }.bind(this), false)
     }
     componentWillUnmount () {
-        Commu.price.el.removeEventListener('compuPrice', function () {
+        Commu.el.removeEventListener('compuPrice', function () {
         }, false)
     }
 

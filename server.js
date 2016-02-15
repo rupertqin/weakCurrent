@@ -38,5 +38,5 @@ app.use(rewrite(/\/[^.]+$/, '/index.html'))
 app.use(express.static(__dirname + '/public'))
 
 app.listen(4000, '0.0.0.0', function () {
-  console.log('Server listening on http://localhost:3000, Ctrl+C to stop')
+  console.log('Server listening on http://localhost:4000, Ctrl+C to stop')
 })

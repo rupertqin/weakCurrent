@@ -1,4 +1,9 @@
 $green: #669a6a;
+$boardWidth: 180;
+
+div {
+    box-sizing: border-box;
+}
 
 #main {
 }
@@ -55,7 +60,9 @@ button:focus, button:active {
 .btn {
     margin: 0 0.3em;
 }
-
+.green {
+    color: $green;
+}
 
 .open-menu.navbar {
     background: none;
@@ -127,7 +134,6 @@ h1 {
 
 .page-create {
     .row-step {
-        width: 80%;
         padding: 50px 10%;
         position: relative;
         border-bottom: 1px solid #999;
@@ -303,7 +309,6 @@ header {
 
 }
 
-$boardWidth: 180;
 .page-cases {
     .container {
         width: 1000px;
@@ -318,12 +323,14 @@ $boardWidth: 180;
             h2 {
                 font-size: 20px;
                 color: #fff;
+                margin-top: 0;
             }
             .scroll {
                 white-space: nowrap;
                 overflow-x: auto; 
                 margin-right: $boardWidth + px;
                 .box {
+                    position: relative;
                     width: 140px;
                     height: 240px;
                     border-radius: 6px;
@@ -334,7 +341,17 @@ $boardWidth: 180;
                     margin-right: 1em;
                     padding: 0.3em;
                     h3 {
+                        font-size: 14px;
+                        font-weight: bold;
+                    }
+                    ul {
                         font-size: 12px;
+                    }
+                    .price {
+                        position: absolute;
+                        right: .6em;
+                        bottom: .6em;
+                        font-size: 16px; 
                     }
                 }
             }
@@ -347,10 +364,68 @@ $boardWidth: 180;
                 background: #eee;
                 border-radius: 0 15px 15px 0;
                 padding: 0.5em;
+                color: $green;
+                .bottom {
+                    position: absolute;
+                    bottom: 1em;
+                    width: 100%;
+                    text-align: center;
+                    .price {
+                        margin-bottom: 2em;
+                    }
+                }
             }
         }
     }
 }
 
+.page-dco-generation {
+    h1 {
+        text-align: center;
+    }
+    text-align: left;
+    .container {
+        width: 100%;
+        .item {
+            padding: 0.5em 2em 1.5em; 
+            border-top: 1px solid #999;
+
+            h2 {
+                text-align: center;
+                font-size: 20px;
+            }
+            h3 {
+                font-size: 14px;
+            }
+        }
+    }
+    .side-bar {
+        position: fixed;
+        right: 0;
+        top: 0;
+        background: #eee;
+        min-width: 300px;
+        height: 100%;
+        margin-left: 0;
+        padding: 2em;
+        color: $green;
+        .inner {
+            position: relative;
+            height: inherit;
+            textarea {
+                width: 100%;
+            }
+            input[type=text] {
+                width: 60px;
+            }
+            .bottom {
+                position: absolute;
+                width: 100%;
+                bottom: 1em;
+                text-align: center;
+            }
+        }
+    }
+}
 
 

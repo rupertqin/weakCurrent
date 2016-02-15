@@ -2,6 +2,8 @@ import React from 'react'
 import { Router, Route, Link, Redirect } from 'react-router'
 import _ from 'lodash'
 
+import Request from '../mod/request'
+
 class StepRow extends React.Component {
     constructor (props) {
         super(props)
@@ -117,8 +119,8 @@ class Product extends React.Component {
         }
     }
     handleSumupPrice () {
-        Commu.price = this.props.machinery.reduce(function (sumup, onemach) {
-            return sumup + onemach.products.reduce(function (subSumup, product) {
+        Commu.price = this.props.machinery.reduce((sumup, onemach)=> {
+            return sumup + onemach.products.reduce((subSumup, product)=> {
                 return subSumup + product.price * product.num
             }, 0)
         }, 0)
@@ -144,8 +146,23 @@ class Product extends React.Component {
 }
 
 class Create extends React.Component {
+    constructor (props) {
+        super(props)
+        this.state = {}
+    }
+    componentDidMount () {
+        // ajax get data
+        setTimeout(()=> {
+            let data = Request.getCreateData()
+            this.setState({
+                data: data
+            })
+        }, 300)
+    }
     render() {
-        const { safeSys, watcher, circuit, machinery } = this.props.data
+        if (!this.state.data) return null
+
+        const { safeSys, watcher, circuit, machinery } = this.state.data
         const { stepID, nodeID } = this.props.params
         const mainClassName= "row-fluid show-grid page-create step-" + stepID
         let { location } = this.props
@@ -161,7 +178,7 @@ class Create extends React.Component {
                     <StepRow boxes={machinery} step-name="machinery"/>
                     <Product machinery={machinery} show={location.query && location.query.showProduct} showWhich={+nodeID-1}/>
                 </div>
-                {this.props.children && React.cloneElement(this.props.children, {data: this.props.data })}
+                {this.props.children && React.cloneElement(this.props.children, {data: this.state.data })}
             </div>
         );
     }
