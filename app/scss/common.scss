@@ -325,35 +325,8 @@ header {
                 color: #fff;
                 margin-top: 0;
             }
-            .scroll {
-                white-space: nowrap;
-                overflow-x: auto; 
+            .mod-scroll {
                 margin-right: $boardWidth + px;
-                .box {
-                    position: relative;
-                    width: 140px;
-                    height: 240px;
-                    border-radius: 6px;
-                    border: 1px solid #999;
-                    background: #fff;
-                    display: inline-block;
-                    color: $green;
-                    margin-right: 1em;
-                    padding: 0.3em;
-                    h3 {
-                        font-size: 14px;
-                        font-weight: bold;
-                    }
-                    ul {
-                        font-size: 12px;
-                    }
-                    .price {
-                        position: absolute;
-                        right: .6em;
-                        bottom: .6em;
-                        font-size: 16px; 
-                    }
-                }
             }
             .board {
                 position: absolute;
@@ -375,6 +348,55 @@ header {
                     }
                 }
             }
+        }
+    }
+}
+.page-products {
+    .container {
+        width: 1000px;
+        margin: 0 auto;
+        .row {
+            position: relative;
+            margin: 0 0 2em;
+            padding: 1em;
+            border-radius: 15px;
+            background: $green;
+            text-align: left;
+            h2 {
+                font-size: 20px;
+                color: #fff;
+                margin-top: 0;
+            }
+        }
+    }
+}
+
+.mod-scroll {
+    white-space: nowrap;
+    overflow-x: auto; 
+    .box {
+        position: relative;
+        width: 140px;
+        height: 240px;
+        border-radius: 6px;
+        border: 1px solid #999;
+        background: #fff;
+        display: inline-block;
+        color: $green;
+        margin-right: 1em;
+        padding: 0.3em;
+        h3 {
+            font-size: 14px;
+            font-weight: bold;
+        }
+        ul {
+            font-size: 12px;
+        }
+        .price {
+            position: absolute;
+            right: .6em;
+            bottom: .6em;
+            font-size: 16px; 
         }
     }
 }

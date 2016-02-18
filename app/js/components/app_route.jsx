@@ -15,6 +15,7 @@ import { Navbar } from './navbar.jsx'
 import { Create } from './create.jsx'
 import { Sidebar } from './sidebar.jsx'
 import DocGeneration from './doc_generation.jsx'
+import Products from './products.jsx'
 import { NoMatch } from './404.jsx'
 
 // Global communicate subscript/dispac
@@ -106,6 +107,7 @@ export default class appRoute extends React.Component {
                             <Route path="node/:nodeID" component={Sidebar} />
                         </Route>
                     </Route>
+                    <Route path="products" component={Products} />
                     
 
                     <Route path="doc-generation/:docId" {...this.props} component={DocGeneration} />

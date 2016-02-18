@@ -1,5 +1,5 @@
-import React from 'react';
-import { Router, Route, Link, Redirect } from 'react-router';
+import React from 'react'
+import { Link } from 'react-router'
 import _ from 'lodash'
 
 import Request from '../mod/request'
@@ -34,21 +34,12 @@ class Case extends React.Component {
                 <div className="mod-scroll">
                     {this.props.data.systems.map((sy,i) => <Box key={i} data={sy}></Box> )}
                 </div>
-                <div className="board">
-                    <h4>描述</h4>
-                    <p className="des">{this.props.data.description}</p>
-                    <div className="bottom">
-                        <p className="price">预估价格<br/>{this.props.data.price}元</p>
-                        <button className="btn btn-success">编辑</button>
-                        <Link to={`/doc-generation/${this.props.data.id}/`} className="btn btn-success">生成文书</Link>
-                    </div>
-                </div>
             </div>
         )
     }
 }
 
-class Cases extends React.Component {
+class ProductList extends React.Component {
     constructor (props) {
         super(props)
         this.state = {}
@@ -56,7 +47,7 @@ class Cases extends React.Component {
     componentDidMount () {
         // ajax get data
         setTimeout(()=> {
-            let data = Request.getCasesData()
+            let data = Request.getProductsData()
             console.log(data)
             this.setState({
                 cases: data.cases
@@ -67,9 +58,9 @@ class Cases extends React.Component {
         if (!this.state.cases) return null
 
         return (
-            <div className="page-cases"> 
+            <div className="page-products"> 
                 <header className="row-fluid">
-                    <div className="span3"><h1>方案列表</h1></div>
+                    <div className="span3"><h1>产品列表</h1></div>
                 </header>
                 <div className="container">
                     <form>
@@ -87,5 +78,4 @@ class Cases extends React.Component {
     }
 }
 
-export default Cases
-
+export default ProductList
