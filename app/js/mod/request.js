@@ -4,7 +4,22 @@ import {Data as casesData} from '../data/casesData'
 import {Data as productsData} from '../data/productsData'
 import {Data as docGenerationData} from '../data/docGenerationData'
 
-class Request {
+function _get(url, fn) {
+    var myRequest = new Request(config.apiPreURL + url)
+    fetch(myRequest).then(function(response) { 
+        response.json().then(fn)
+    })
+}
+
+function _2searchObj(params) {
+    var arr = []
+    for (var k in params) {
+        arr.push(k + '=' + params[k])
+    } 
+    return arr.join('&')
+}
+
+class Req{
     getCreateData () {
         return createData
     }
@@ -17,8 +32,11 @@ class Request {
     getDocGenerationData (id) {
         return docGenerationData
     }
+    getModule(params, fn) {
+        return _get('module?' + _2searchObj(params), fn)
+    }
 }
 
 
-export default new Request
+export default new Req
 

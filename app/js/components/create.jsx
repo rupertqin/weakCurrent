@@ -150,27 +150,16 @@ class Create extends React.Component {
         super(props)
         this.state = {}
     }
-    componentDidMount () {
-        // ajax get data
-        var myRequest = new Request(config.apiPreURL+'module?parent_id=')
-        fetch(myRequest).then(function(response) { 
-            response.json().then(function(data) {
-                console.log(data)
-                this.setState({
-                    data: data
-                })
 
+    componentDidMount () {
+        Req.getModule({parent_id: ''}, function(data){
+            console.log(data)
+            this.setState({
+                data: data
             })
-            
-        })
-        
-        // setTimeout(()=> {
-        //     let data = Request.getCreateData()
-        //     this.setState({
-        //         data: data
-        //     })
-        // }, 300)
+        }.bind(this))
     }
+
     render() {
         if (!this.state.data) return null
 
