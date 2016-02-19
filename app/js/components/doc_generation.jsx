@@ -5,7 +5,7 @@ import _ from 'lodash'
 import classnames from 'classnames'
 
 
-import Request from '../mod/request'
+import Req from '../mod/request'
 
 class SideBar extends Component {
     constructor (props, context) {
@@ -198,7 +198,7 @@ class DocGeneration extends Component {
     componentDidMount () {
         // ajax get data
         setTimeout(()=> {
-            let data = Request.getDocGenerationData(this.props.params.docId)
+            let data = Req.getDocGenerationData(this.props.params.docId)
             console.log(data)
             this.setState({
                 data: data

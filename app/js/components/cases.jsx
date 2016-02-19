@@ -2,7 +2,7 @@ import React from 'react';
 import { Router, Route, Link, Redirect } from 'react-router';
 import _ from 'lodash'
 
-import Request from '../mod/request'
+import Req from '../mod/request'
 
 class Box extends React.Component {
     // constructor () {
@@ -56,7 +56,7 @@ class Cases extends React.Component {
     componentDidMount () {
         // ajax get data
         setTimeout(()=> {
-            let data = Request.getCasesData()
+            let data = Req.getCasesData()
             console.log(data)
             this.setState({
                 cases: data.cases

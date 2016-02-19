@@ -2,7 +2,7 @@ import React from 'react'
 import { Router, Route, Link, Redirect } from 'react-router'
 import _ from 'lodash'
 
-import Request from '../mod/request'
+import Req from '../mod/request'
 
 class StepRow extends React.Component {
     constructor (props) {
@@ -152,12 +152,24 @@ class Create extends React.Component {
     }
     componentDidMount () {
         // ajax get data
-        setTimeout(()=> {
-            let data = Request.getCreateData()
-            this.setState({
-                data: data
+        var myRequest = new Request(config.apiPreURL+'module?parent_id=')
+        fetch(myRequest).then(function(response) { 
+            response.json().then(function(data) {
+                console.log(data)
+                this.setState({
+                    data: data
+                })
+
             })
-        }, 300)
+            
+        })
+        
+        // setTimeout(()=> {
+        //     let data = Request.getCreateData()
+        //     this.setState({
+        //         data: data
+        //     })
+        // }, 300)
     }
     render() {
         if (!this.state.data) return null

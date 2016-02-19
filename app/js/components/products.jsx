@@ -2,7 +2,10 @@ import React from 'react'
 import { Link } from 'react-router'
 import _ from 'lodash'
 
-import Request from '../mod/request'
+import Req from '../mod/request'
+
+import cfg from '../config'
+console.log(cfg)
 
 class Box extends React.Component {
     // constructor () {
@@ -47,7 +50,7 @@ class ProductList extends React.Component {
     componentDidMount () {
         // ajax get data
         setTimeout(()=> {
-            let data = Request.getProductsData()
+            let data = Req.getProductsData()
             console.log(data)
             this.setState({
                 cases: data.cases

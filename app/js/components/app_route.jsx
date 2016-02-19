@@ -5,7 +5,7 @@ import { createStore } from 'redux'
 
 // import "../scss/common.scss"
 
-import Request from '../mod/request'
+import Req from '../mod/request'
 
 import { Search } from './search.jsx'
 import { Login } from './login.jsx'
