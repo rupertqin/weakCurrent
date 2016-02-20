@@ -3,147 +3,139 @@ import { Router, Route, Link, Redirect } from 'react-router'
 import _ from 'lodash'
 
 import Req from '../mod/request'
+import { Item } from './item.jsx';
+
+class Sidebar extends React.Component {
+    constructor () {
+        super()
+        this.state = { 
+            sumup: Commu.price
+        }
+    }
+    componentDidMount () {
+        Commu.el.addEventListener('compuPrice', function (e) {
+            this.setState({sumup: Commu.price})
+        }.bind(this), false)
+    }
+    componentWillUnmount () {
+        Commu.el.removeEventListener('compuPrice', function () {
+        }, false)
+    }
+
+    render() {
+        const { pathname } = this.props.location
+        const { stepID, nodeID } = this.props.params
+        const idx = this.state.stepNames.indexOf(stepID)
+        const nextIdx = idx == this.state.stepNames.length-1 ? idx : idx+1
+        const nextPath = `/create/step/${this.state.stepNames[nextIdx]}`
+        const data = this.props.data[nodeID-1]
+        return (
+            <div className='navbar-inner' key={[stepID,nodeID]}>
+                <h3>{data.name}</h3>
+                <Item items={data.sidebar} />
+                <div className='bottom'>
+                    <Link className='btn btn-success next' to={nextPath}>选择子模块</Link>
+                    <div className='last-step'>
+                        <div className='price'>
+                            <p>预估价格</p>
+                            <h4>{this.state.sumup}</h4>
+                        </div>
+                        <Link className='btn btn-success' to={nextPath}>保存方案</Link>
+                        <Link className='btn btn-success' query={{showProduct: true}} to={pathname}>选择产品</Link>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+}
 
 class StepRow extends React.Component {
     constructor (props) {
         super(props)
         this.state = {
-            shownBoxes: props.boxes.slice(0,4),
+            currId: this.props.ids[0],
+            ids: this.props.ids.slice(1),
             startIdx: 0
         }
     }
+
+    componentDidMount () {
+
+        // if r, root module
+        let parent_id = this.state.currId
+        if (this.state.currId == 'r') parent_id = ''
+        Req.getModule({parent_id: parent_id}, function(data){
+            console.log(data)
+            this.setState({
+                boxes: data,
+                shownBoxes: data.slice(0,4)
+            })
+        }.bind(this))
+    }
+
     next () {
-        const len = this.props.boxes.length
+        const len = this.state.boxes.length
         let sIdx = this.state.startIdx
         if (sIdx + 4 <= len -1) {
             let newSIdx = ++this.state.startIdx
             this.setState({shownBoxes: this.props.boxes.slice(newSIdx, newSIdx + 4)})
         }
     }
+
     prev () {
-        const len = this.props.boxes.length
+        const len = this.state.boxes.length
         let sIdx = this.state.startIdx
         if (sIdx > 0) {
             let newSIdx = --this.state.startIdx
             this.setState({shownBoxes: this.props.boxes.slice(newSIdx, newSIdx + 4)})
         }
     }
+
     render () {
-        const stepName = this.props["step-name"]
+        if (!this.state.shownBoxes) return null
         let leftActive = ''
         let rightActive = ''
         let hide = ''
 
 
-        if (this.props.boxes.length <= 4) {
+        if (this.state.boxes.length <= 4) {
             hide = " hidden "
             hide = " hidden "
         } else {
             if (this.state.startIdx > 0) {
                 leftActive = " active "
             } 
-            if (this.state.startIdx + 4 < this.props.boxes.length ) {
+            if (this.state.startIdx + 4 < this.state.boxes.length ) {
                 rightActive = " active "
             }
         }
-        return (
-            <div className={`row-fluid row-step row-${stepName}`}>
-                {this.state.shownBoxes.map(function (node, i) {
-                    return (
-                        <div className="span3" key={i}>
-                            <Link to={`/create/step/${stepName}/node/${i+1+this.state.startIdx}`} activeClassName="active">
-                                <img src={node.cover} className="cover" />
-                                <button className="btn" activeClassName="btn-success">{node.name}</button>
-                            </Link>
-                        </div>
-                    )
-                }.bind(this))}
-                <span className={`arrow fa fa-angle-left left ${leftActive} ${hide}`} onClick={this.prev.bind(this)}></span>
-                <span className={`arrow fa fa-angle-right right ${rightActive} ${hide}`} onClick={this.next.bind(this)}></span>
-                <span className={`arrow fa fa-angle-down`}></span>
-            </div>
-        )
-    }
-}
-
-
-class ProductBox extends React.Component {
-    constructor (props) {
-        super(props)
-        this.state = {
-            num: this.props.product.num
+        let _StepRow = null
+        if (this.state.ids.length) {
+            _StepRow = <StepRow ids={this.state.ids} />
         }
-    }
-    broadcast () {
-        this.props.product.num = this.state.num
-        this.props.sumupPrice()
-        Commu.el.dispatchEvent(Commu.event)
-    }
-    add () {
-        let num = ++this.state.num
-        this.setState({num: num})
-        this.broadcast()
-    }
-    reduce () {
-        if (this.state.num <= 0) 
-            return
-        let num = --this.state.num
-        this.setState({num: num})
-        this.broadcast()
-    }
-    render () {
         return (
-            <div className="span3">
-                <img src={this.props.product.cover} className="cover" />
-                <h4>{this.props.product.name}</h4>
-                <h4>{this.props.product.price}元</h4>
-                <p>{this.props.product.description}</p>
-                <form>
-                    <div className="input-prepend">
-                        <a className="btn btn-success" onClick={this.reduce.bind(this)}><i className="icon-minus icon-white"></i></a>
-                        <input type="text" value={this.state.num} readOnly={true}/>
-                        <a className="btn btn-success" onClick={this.add.bind(this)}><i className="icon-plus icon-white"></i></a>
-                    </div>
-                </form>
+            <div>
+                <div className={`row-fluid row-step`}>
+                    {this.state.shownBoxes.map(function (node, i) {
+                        return (
+                            <div className="span3" key={i}>
+                                <Link to={`/create/step`} activeClassName="active">
+                                    <img src={node.cover} className="cover" />
+                                    <button className="btn" activeClassName="btn-success">{node.name}</button>
+                                </Link>
+                            </div>
+                        )
+                    }.bind(this))}
+                    <span className={`arrow fa fa-angle-left left ${leftActive} ${hide}`} onClick={this.prev.bind(this)}></span>
+                    <span className={`arrow fa fa-angle-right right ${rightActive} ${hide}`} onClick={this.next.bind(this)}></span>
+                    <span className={`arrow fa fa-angle-down`}></span>
+                </div>
+                {_StepRow}
             </div>
         )
     }
 }
 
-class Product extends React.Component {
-    constructor (props) {
-        super(props)
-        this.handleSumupPrice()
-        this.state = {
-
-        }
-    }
-    handleSumupPrice () {
-        Commu.price = this.props.machinery.reduce((sumup, onemach)=> {
-            return sumup + onemach.products.reduce((subSumup, product)=> {
-                return subSumup + product.price * product.num
-            }, 0)
-        }, 0)
-    }
-    render() {
-        let hideClaN = this.props.show ? '' : 'hide'
-        return (
-            <div className={`product ${hideClaN}`}>
-                {this.props.machinery.map(function (onemach, j) {
-                    return (
-                        <div className={`row-fluid show-grid product-list ${this.props.showWhich != j ? "hide" : ""}`} key={j}>
-                            {onemach.products.map(function (product, i) {
-                                return (
-                                    <ProductBox key={i} product={product} data={this.props.machinery} sumupPrice={this.handleSumupPrice.bind(this)}/>
-                                )
-                            }.bind(this))}
-                        </div>
-                    )
-                }.bind(this))}
-            </div>
-        )
-    }
-}
 
 class Create extends React.Component {
     constructor (props) {
@@ -151,21 +143,11 @@ class Create extends React.Component {
         this.state = {}
     }
 
-    componentDidMount () {
-        Req.getModule({parent_id: ''}, function(data){
-            console.log(data)
-            this.setState({
-                data: data
-            })
-        }.bind(this))
-    }
-
     render() {
-        if (!this.state.data) return null
 
-        const { safeSys, watcher, circuit, machinery } = this.state.data
-        const { stepID, nodeID } = this.props.params
-        const mainClassName= "row-fluid show-grid page-create step-" + stepID
+        let { id } = this.props.params
+        const ids = id.split('-')
+        const mainClassName= "row-fluid show-grid page-create step-" + ids[0] 
         let { location } = this.props
         return (
             <div className={mainClassName}>
@@ -173,11 +155,8 @@ class Create extends React.Component {
                     <div className="page-header">
                         <h1>xxx 方案</h1>
                     </div>
-                    <StepRow boxes={safeSys} step-name="safeSys"/>
-                    <StepRow boxes={watcher} step-name="watcher"/>
-                    <StepRow boxes={circuit} step-name="circuit"/>
-                    <StepRow boxes={machinery} step-name="machinery"/>
-                    <Product machinery={machinery} show={location.query && location.query.showProduct} showWhich={+nodeID-1}/>
+                    <StepRow ids={['r']} />
+                    <StepRow ids={ids} />
                 </div>
                 {this.props.children && React.cloneElement(this.props.children, {data: this.state.data })}
             </div>
