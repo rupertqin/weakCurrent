@@ -53,12 +53,11 @@ class StepRow extends React.Component {
     constructor (props) {
         super(props)
         this.state = {
-            parent_nth: this.props.ids[this.props.step - 1],
             startIdx: 0
         }
     }
 
-    componentDidMount () {
+    syncProps () {
         if (this.props.boxes) {
             this.setState({
                 boxes: this.props.boxes,
@@ -66,7 +65,8 @@ class StepRow extends React.Component {
             })
         } else {
             // if r, root module
-            let parent_id = this.state.parent_nth == 'r' ? '' : this.props.parentBoxes[this.state.parent_nth].id
+            let parent_nth = this.props.ids[this.props.step - 1]
+            let parent_id = parent_nth == 'r' ? '' : this.props.parentBoxes[parent_nth].id
             Req.getModule({parent_id: parent_id}, function(data){
                 console.log(data)
                 this.setState({
@@ -76,6 +76,13 @@ class StepRow extends React.Component {
             }.bind(this))
         }
 
+    }
+
+    componentDidMount () {
+        this.syncProps() 
+    }
+    componentWillReceiveProps () {
+        this.syncProps() 
     }
 
     next () {
@@ -100,7 +107,7 @@ class StepRow extends React.Component {
         // get linkStr
         let idsClone = this.props.ids.slice()
         idsClone = idsClone.slice(0,this.props.step)
-        idsClone.push(i)
+        idsClone.push(this.state.startIdx + i)
         return idsClone.join('-')
     }
 
@@ -143,6 +150,7 @@ class StepRow extends React.Component {
                     parentBoxes={this.state.boxes} 
                     /> 
                 }
+                {this.props.children}
             </div>
         )
     }
