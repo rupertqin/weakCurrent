@@ -53,24 +53,29 @@ class StepRow extends React.Component {
     constructor (props) {
         super(props)
         this.state = {
-            currId: this.props.ids[0],
-            ids: this.props.ids.slice(1),
+            parent_nth: this.props.ids[this.props.step - 1],
             startIdx: 0
         }
     }
 
     componentDidMount () {
-
-        // if r, root module
-        let parent_id = this.state.currId
-        if (this.state.currId == 'r') parent_id = ''
-        Req.getModule({parent_id: parent_id}, function(data){
-            console.log(data)
+        if (this.props.boxes) {
             this.setState({
-                boxes: data,
-                shownBoxes: data.slice(0,4)
+                boxes: this.props.boxes,
+                shownBoxes: this.props.boxes
             })
-        }.bind(this))
+        } else {
+            // if r, root module
+            let parent_id = this.state.parent_nth == 'r' ? '' : this.props.parentBoxes[this.state.parent_nth].id
+            Req.getModule({parent_id: parent_id}, function(data){
+                console.log(data)
+                this.setState({
+                    boxes: data,
+                    shownBoxes: data.slice(0,4)
+                })
+            }.bind(this))
+        }
+
     }
 
     next () {
@@ -78,7 +83,7 @@ class StepRow extends React.Component {
         let sIdx = this.state.startIdx
         if (sIdx + 4 <= len -1) {
             let newSIdx = ++this.state.startIdx
-            this.setState({shownBoxes: this.props.boxes.slice(newSIdx, newSIdx + 4)})
+            this.setState({shownBoxes: this.state.boxes.slice(newSIdx, newSIdx + 4)})
         }
     }
 
@@ -87,19 +92,25 @@ class StepRow extends React.Component {
         let sIdx = this.state.startIdx
         if (sIdx > 0) {
             let newSIdx = --this.state.startIdx
-            this.setState({shownBoxes: this.props.boxes.slice(newSIdx, newSIdx + 4)})
+            this.setState({shownBoxes: this.state.boxes.slice(newSIdx, newSIdx + 4)})
         }
     }
 
+    makeLinkStr (i) {
+        // get linkStr
+        let idsClone = this.props.ids.slice()
+        idsClone = idsClone.slice(0,this.props.step)
+        idsClone.push(i)
+        return idsClone.join('-')
+    }
+
     render () {
-        if (!this.state.shownBoxes) return null
+        if (!this.state.boxes || this.state.boxes.length == 0) return null
         let leftActive = ''
         let rightActive = ''
         let hide = ''
 
-
         if (this.state.boxes.length <= 4) {
-            hide = " hidden "
             hide = " hidden "
         } else {
             if (this.state.startIdx > 0) {
@@ -109,17 +120,14 @@ class StepRow extends React.Component {
                 rightActive = " active "
             }
         }
-        let _StepRow = null
-        if (this.state.ids.length) {
-            _StepRow = <StepRow ids={this.state.ids} />
-        }
+        
         return (
             <div>
                 <div className={`row-fluid row-step`}>
                     {this.state.shownBoxes.map(function (node, i) {
                         return (
                             <div className="span3" key={i}>
-                                <Link to={`/create/step`} activeClassName="active">
+                                <Link to={`/create/${this.makeLinkStr(i)}`} activeClassName="active">
                                     <img src={node.cover} className="cover" />
                                     <button className="btn" activeClassName="btn-success">{node.name}</button>
                                 </Link>
@@ -130,21 +138,35 @@ class StepRow extends React.Component {
                     <span className={`arrow fa fa-angle-right right ${rightActive} ${hide}`} onClick={this.next.bind(this)}></span>
                     <span className={`arrow fa fa-angle-down`}></span>
                 </div>
-                {_StepRow}
+                { this.props.step != 0 && this.props.step < this.props.ids.length && <StepRow ids={this.props.ids} 
+                    step={this.props.step + 1}
+                    parentBoxes={this.state.boxes} 
+                    /> 
+                }
             </div>
         )
     }
 }
 
-
 class Create extends React.Component {
     constructor (props) {
         super(props)
-        this.state = {}
+        this.state = {
+            boxes: []    
+        }
+    }
+
+    componentDidMount () {
+        Req.getModule({parent_id: ''}, function(data){
+            console.log(data)
+            this.setState({
+                boxes: data
+            })
+        }.bind(this))
     }
 
     render() {
-
+        if (this.state.boxes.length == 0) return null
         let { id } = this.props.params
         const ids = id.split('-')
         const mainClassName= "row-fluid show-grid page-create step-" + ids[0] 
@@ -155,8 +177,8 @@ class Create extends React.Component {
                     <div className="page-header">
                         <h1>xxx 方案</h1>
                     </div>
-                    <StepRow ids={['r']} />
-                    <StepRow ids={ids} />
+                    <StepRow ids={ids} boxes={this.state.boxes} step={0} />
+                    <StepRow ids={ids} parentBoxes={this.state.boxes} step={1} />
                 </div>
                 {this.props.children && React.cloneElement(this.props.children, {data: this.state.data })}
             </div>
@@ -164,4 +186,4 @@ class Create extends React.Component {
     }
 }
 
-export {Create}
+export default Create

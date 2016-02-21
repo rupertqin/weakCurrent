@@ -8,7 +8,7 @@ import { Login } from './login.jsx'
 import Reg from './reg.jsx'
 import Cases from './cases.jsx'
 import { Navbar } from './navbar.jsx'
-import { Create } from './create.jsx'
+import Create from './create.jsx'
 import DocGeneration from './doc_generation.jsx'
 import Products from './products.jsx'
 import { NoMatch } from './404.jsx'
@@ -48,7 +48,7 @@ export default class appRoute extends React.Component {
                     <Route path="cases" component={Cases} />
                     <Route path="create/:id" component={Create}>
                         <IndexRoute onEnter={function (location, replaceState) {
-                            if (!location.params.id) replaceState(null, '/create/1')
+                            if (!location.params.id) replaceState(null, '/create/0')
                         }} />
                     </Route>
                     <Route path="products" component={Products} />
