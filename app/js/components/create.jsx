@@ -82,7 +82,8 @@ class StepRow extends React.Component {
         this.syncProps() 
     }
     componentWillReceiveProps () {
-        this.syncProps() 
+        if (this.props.ids.length < this.props.step + 1)
+            this.syncProps() 
     }
 
     next () {
@@ -188,7 +189,6 @@ class Create extends React.Component {
                     <StepRow ids={ids} boxes={this.state.boxes} step={0} />
                     <StepRow ids={ids} parentBoxes={this.state.boxes} step={1} />
                 </div>
-                {this.props.children && React.cloneElement(this.props.children, {data: this.state.data })}
             </div>
         );
     }
