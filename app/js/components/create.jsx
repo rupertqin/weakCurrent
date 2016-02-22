@@ -75,14 +75,13 @@ class StepRow extends React.Component {
                 })
             }.bind(this))
         }
-
     }
 
     componentDidMount () {
         this.syncProps() 
     }
     componentWillReceiveProps () {
-        if (this.props.ids.length < this.props.step + 1)
+        if (this.props.step => this.props.ids.length)
             this.syncProps() 
     }
 
@@ -137,7 +136,7 @@ class StepRow extends React.Component {
                             <div className="span3" key={i}>
                                 <Link to={`/create/${this.makeLinkStr(i)}`} activeClassName="active">
                                     <img src={node.cover} className="cover" />
-                                    <button className="btn" activeClassName="btn-success">{node.name}</button>
+                                    <button className="btn">{node.name}</button>
                                 </Link>
                             </div>
                         )
