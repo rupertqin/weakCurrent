@@ -81,8 +81,12 @@ class StepRow extends React.Component {
         this.syncProps() 
     }
     componentWillReceiveProps () {
-        if (this.props.step => this.props.ids.length)
+        if (this.props.step >= this.props.ids.length)
             this.syncProps() 
+    }
+
+    shouldComponentUpdate (nextProps, nextState) {
+        return !_.isEqual(nextProps.ids, this.props.ids) && this.props.step > this.props.ids.length
     }
 
     next () {
