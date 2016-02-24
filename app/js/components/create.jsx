@@ -53,7 +53,9 @@ class StepRow extends React.Component {
     constructor (props) {
         super(props)
         this.state = {
-            startIdx: 0
+            startIdx: 0,
+            boxes: this.props.boxes,
+            shownBoxes: this.props.boxes.slice(0,4)       
         }
     }
 
@@ -77,17 +79,9 @@ class StepRow extends React.Component {
         }
     }
 
-    componentDidMount () {
-        this.syncProps() 
-    }
-    componentWillReceiveProps () {
-        if (this.props.step >= this.props.ids.length)
-            this.syncProps() 
-    }
-
-    shouldComponentUpdate (nextProps, nextState) {
-        return !_.isEqual(nextProps.ids, this.props.ids) && this.props.step > this.props.ids.length
-    }
+    // componentDidMount () {
+    //     this.syncProps() 
+    // }
 
     next () {
         const len = this.state.boxes.length
@@ -116,18 +110,18 @@ class StepRow extends React.Component {
     }
 
     render () {
-        if (!this.state.boxes || this.state.boxes.length == 0) return null
+        if (!this.props.boxes || this.props.boxes.length == 0) return null
         let leftActive = ''
         let rightActive = ''
         let hide = ''
 
-        if (this.state.boxes.length <= 4) {
+        if (this.props.boxes.length <= 4) {
             hide = " hidden "
         } else {
-            if (this.state.startIdx > 0) {
+            if (this.props.startIdx > 0) {
                 leftActive = " active "
             } 
-            if (this.state.startIdx + 4 < this.state.boxes.length ) {
+            if (this.props.startIdx + 4 < this.props.boxes.length ) {
                 rightActive = " active "
             }
         }
@@ -135,7 +129,7 @@ class StepRow extends React.Component {
         return (
             <div>
                 <div className={`row-fluid row-step`}>
-                    {this.state.shownBoxes.map(function (node, i) {
+                    {this.props.boxes.slice(0, 4).map(function (node, i) {
                         return (
                             <div className="span3" key={i}>
                                 <Link to={`/create/${this.makeLinkStr(i)}`} activeClassName="active">
@@ -149,12 +143,6 @@ class StepRow extends React.Component {
                     <span className={`arrow fa fa-angle-right right ${rightActive} ${hide}`} onClick={this.next.bind(this)}></span>
                     <span className={`arrow fa fa-angle-down`}></span>
                 </div>
-                { this.props.step != 0 && this.props.step < this.props.ids.length && <StepRow ids={this.props.ids} 
-                    step={this.props.step + 1}
-                    parentBoxes={this.state.boxes} 
-                    /> 
-                }
-                {this.props.children}
             </div>
         )
     }
@@ -164,33 +152,61 @@ class Create extends React.Component {
     constructor (props) {
         super(props)
         this.state = {
-            boxes: []    
+            data: {} 
         }
     }
 
+    tierData (arr) {
+        let root =  {}
+        function findChildren(node){
+            for (let i=0; i< arr.length;i++) {
+                if (!arr[i].parent_id || arr[i].parent_id == node.id) { 
+                    if (!node.children) node.children = [] 
+                    node.children.push(arr[i])
+                    arr.splice(i, 1)
+                    i--
+                }
+            }
+            if (node.children) {
+                for (var i = 0; i < node.children.length; i++) {
+                    findChildren(node.children[i])
+                }
+            }
+        }
+        findChildren(root)    
+        return root
+    }
+
     componentDidMount () {
-        Req.getModule({parent_id: ''}, function(data){
-            console.log(data)
+        Req.getModule({}, function(arr){
+            let newData = this.tierData(arr)
             this.setState({
-                boxes: data
+                data: newData
             })
         }.bind(this))
     }
 
     render() {
-        if (this.state.boxes.length == 0) return null
+        if (!this.state.data.children) return null
         let { id } = this.props.params
         const ids = id.split('-')
         const mainClassName= "row-fluid show-grid page-create step-" + ids[0] 
         let { location } = this.props
+        let boxes = this.state.data.children
         return (
             <div className={mainClassName}>
                 <div className="span9">
                     <div className="page-header">
                         <h1>xxx 方案</h1>
                     </div>
-                    <StepRow ids={ids} boxes={this.state.boxes} step={0} />
-                    <StepRow ids={ids} parentBoxes={this.state.boxes} step={1} />
+                    <StepRow ids={ids} boxes={boxes} parentBoxes={boxes} step={0} />
+                    { ids.map(function(id, i){
+                        boxes = boxes[id].children    
+                        if (boxes)
+                            return <StepRow ids={ids} boxes={boxes} key={i} len={boxes.length} step={i+1} />
+                        else
+                            return null
+                    }.bind(this))}
                 </div>
             </div>
         );
