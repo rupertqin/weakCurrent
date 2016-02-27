@@ -151,8 +151,10 @@ class StepRow extends React.Component {
 class Create extends React.Component {
     constructor (props) {
         super(props)
+        let { id } = this.props.params
         this.state = {
-            data: {} 
+            data: {},
+            ids: id.split('-') 
         }
     }
 
@@ -177,21 +179,41 @@ class Create extends React.Component {
         return root
     }
 
-    componentDidMount () {
-        Req.getModule({}, function(arr){
-            let newData = this.tierData(arr)
+    getParameter (data, ids) {
+        const module = ids.reduce((module, id)=> {
+            return module.children[id]
+        }, data) 
+        Req.getParameter({module_id: module.id}, (newData)=> {
             this.setState({
-                data: newData
+                parameter: newData
             })
         }.bind(this))
     }
 
+    componentDidMount () {
+        Req.getModule({}, (arr)=> {
+            let newData = this.tierData(arr)
+            const ids = this.props.params.id.split('-')  
+            this.setState({
+                data: newData
+            })
+            this.getParameter(newData, ids)
+        }.bind(this))
+    }
+
+    componentWillReceiveProps (nextProps) {
+        if (!(nextProps.params.id == this.props.params.id)) {
+            const ids = nextProps.params.id.split('-')  
+            this.setState({
+                ids: ids
+            })
+            this.getParameter(this.state.data, ids)
+        }
+    }
+
     render() {
         if (!this.state.data.children) return null
-        let { id } = this.props.params
-        const ids = id.split('-')
-        const mainClassName= "row-fluid show-grid page-create step-" + ids[0] 
-        let { location } = this.props
+        const mainClassName= "row-fluid show-grid page-create step-" + this.state.ids[0] 
         let boxes = this.state.data.children
         return (
             <div className={mainClassName}>
@@ -199,11 +221,11 @@ class Create extends React.Component {
                     <div className="page-header">
                         <h1>xxx 方案</h1>
                     </div>
-                    <StepRow ids={ids} boxes={boxes} parentBoxes={boxes} step={0} />
-                    { ids.map(function(id, i){
+                    <StepRow ids={this.state.ids} boxes={boxes} parentBoxes={boxes} step={0} />
+                    { this.state.ids.map(function(id, i){
                         boxes = boxes[id].children    
                         if (boxes)
-                            return <StepRow ids={ids} boxes={boxes} key={i} len={boxes.length} step={i+1} />
+                            return <StepRow ids={this.state.ids} boxes={boxes} key={i} len={boxes.length} step={i+1} />
                         else
                             return null
                     }.bind(this))}

@@ -35,6 +35,9 @@ class Req{
     getModule(params, fn) {
         return _get('module?' + _2searchObj(params), fn)
     }
+    getParameter(params, fn) {
+        return _get('parameter?' + _2searchObj(params), fn)
+    }
 }
 
 
