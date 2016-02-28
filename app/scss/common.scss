@@ -1,6 +1,12 @@
 $green: #669a6a;
 $boardWidth: 180;
 
+.ellipsis {
+    text-overflow:ellipsis; 
+    white-space:nowrap; 
+    overflow:hidden;     
+}
+
 div {
     box-sizing: border-box;
 }
@@ -227,13 +233,13 @@ h1 {
         }
         .items {
             .control-label {
-                width: 80px;
             }
             .controls {
-                margin-left: 70px;
-                text-align: left;
                 input[type=text] {
                     width: 60px;
+                }
+                select {
+                    width: 100%;
                 }
                 label {
                     display: inline-block;

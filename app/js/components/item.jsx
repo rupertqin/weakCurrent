@@ -27,16 +27,17 @@ class Item extends React.Component {
                     } else {
                         itemDom = (
                             <div className="control-group" key={i}>
-                                <label className="control-label">{item.name}:</label>
+                                <label className="control-label ellipsis">{item.name}:</label>
                                 <div className="controls">
-                                {item.values.map(function (value, j) {
-                                    return (
-                                        <label key={j}>
-                                            <input type="radio" name={`optionsRadios${i}`} value="option1" />
-                                            <a className="btn" type="submit">{value}</a>
-                                        </label>
-                                    )
-                                })}
+                                    <select>
+                                        {item.options[0].split('，').map(function (value, j) {
+                                            return (
+                                                <option name={`optionsRadios${i}`} key={j}>
+                                                    {value}
+                                                </option>
+                                            )
+                                        })}
+                                    </select>
                                 </div>
                             </div>
                         )
