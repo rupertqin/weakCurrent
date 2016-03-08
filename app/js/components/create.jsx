@@ -3,7 +3,7 @@ import { Router, Route, Link, Redirect } from 'react-router'
 import _ from 'lodash'
 
 import Req from '../mod/request'
-import { Item } from './item.jsx';
+import { Items } from './items.jsx';
 
 class Sidebar extends React.Component {
     constructor () {
@@ -21,7 +21,7 @@ class Sidebar extends React.Component {
         return (
             <div className='navbar-inner'>
                 <h3>{this.props.module.name}</h3>
-                <Item items={this.props.parameters} />
+                <Items items={this.props.parameters} />
                 <div className='bottom'>
                     <Link className='btn btn-success next' to={nextPath}>选择子模块</Link>
                 </div>
