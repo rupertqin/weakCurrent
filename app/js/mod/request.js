@@ -38,6 +38,9 @@ class Req{
     getParameter(params, fn) {
         return _get('parameter?' + _2searchObj(params), fn)
     }
+    getSolutions(fn) {
+        return _get('solution', fn)
+    }
 }
 
 

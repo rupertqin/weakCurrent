@@ -6,7 +6,7 @@ import Req from '../mod/request'
 import { Search } from './search.jsx'
 import { Login } from './login.jsx'
 import Reg from './reg.jsx'
-import Cases from './cases.jsx'
+import Solutions from './solutions.jsx'
 import { Navbar } from './navbar.jsx'
 import Create from './create.jsx'
 import DocGeneration from './doc_generation.jsx'
@@ -45,7 +45,7 @@ export default class appRoute extends React.Component {
                     <Route path="search" component={Search} />
                     <Route path="login" component={Login} />
                     <Route path="reg" component={Reg} />
-                    <Route path="cases" component={Cases} />
+                    <Route path="solutions" component={Solutions} />
                     <Route path="create/:id" component={Create}>
                         <IndexRoute onEnter={function (location, replaceState) {
                             if (!location.params.id) replaceState(null, '/create/0')
