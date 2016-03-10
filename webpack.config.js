@@ -6,8 +6,10 @@ module.exports = {
     output: {
         path: __dirname + '/public/build/js/',
         filename: "[name].bundle.js",
-        publicPath: '/build/js'
+        publicPath: '/build/js',
+        sourceMapFilename: '[file].map'
     },
+    devtool: 'source-map',
     module: {
         loaders: [
             { test: /\.scss$/, loader: 'style!raw!autoprefixer?{browsers:["safari >= 7", "Firefox 15", "ie >= 8", "chrome >= 34"]}!sass' },

@@ -4,7 +4,6 @@ import _ from 'lodash'
 const Data = Mock.mock({
     'cases': [{
         'description': '建设xx楼宇项目，包含xx系统、xx系统等',
-        'name': 'xx楼宇设计方案',
         'price|1000-100000': 1,
         'systems|5-10': [{
             'name|1': [

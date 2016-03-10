@@ -1,5 +1,6 @@
 import React from 'react';
 import { Router, Route, Link, Redirect } from 'react-router';
+import linkState from 'react-link-state'
 import _ from 'lodash'
 
 import Req from '../mod/request'
@@ -55,7 +56,8 @@ class Solution extends React.Component {
 export default class Solutions extends React.Component {
     constructor (props) {
         super(props)
-        this.state = {}
+        this.state = {
+        }
     }
 
     flattenData (arr) {
@@ -73,7 +75,15 @@ export default class Solutions extends React.Component {
     }
 
     componentDidMount () {
-        Req.getSolutions((newData)=> {
+        Req.getSolutions({}, function(newData) {
+            this.setState({
+                solutions: this.flattenData(newData)
+            })
+        }.bind(this))
+    }
+
+    search () {
+        Req.getSolutions({keyword: this.refs.keyword.value}, function(newData) {
             this.setState({
                 solutions: this.flattenData(newData)
             })
@@ -89,10 +99,10 @@ export default class Solutions extends React.Component {
                     <div className="span3"><h1>方案列表</h1></div>
                 </header>
                 <div className="container">
-                    <form>
+                    <form onSubmit={this.search.bind(this)}>
                         <div className="input-append">
-                            <input className="span3" id="" type="text"/>
-                            <button className="btn btn-success" type="button">
+                            <input className="span3" id="" ref="keyword" type="text"/>
+                            <button className="btn btn-success" type="submit">
                                 <i className="icon-search icon-white"></i> 搜索
                             </button>
                         </div>
