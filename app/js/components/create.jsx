@@ -17,6 +17,7 @@ class Sidebar extends React.Component {
     }
 
     render() {
+        if (!this.props.parameters) {return (<i class="fa fa-spinner"></i>)}
         const nextPath = `/create/step/${this.props.ids.concat(0).join('-')}`
         return (
             <div className='navbar-inner'>
@@ -33,12 +34,13 @@ class Sidebar extends React.Component {
 class StepRow extends React.Component {
     constructor (props) {
         super(props)
-        this.showLen = 3
+        const showLen = 3
         this.state = {
             startIdx: 0,
+            showLen: showLen,
             boxes: this.props.boxes,
             leftActive: false,
-            rightActive: this.props.boxes.length > this.showLen
+            rightActive: this.props.boxes.length > showLen
         }
     }
 
@@ -47,7 +49,7 @@ class StepRow extends React.Component {
             const newStartIdx = --this.state.startIdx
             this.setState({
                 leftActive: newStartIdx > 0,
-                rightActive: this.props.boxes.length > this.showLen + newStartIdx,
+                rightActive: this.props.boxes.length > this.state.showLen+ newStartIdx,
                 startIdx: newStartIdx
             })
         }
@@ -58,7 +60,7 @@ class StepRow extends React.Component {
             const newStartIdx = ++this.state.startIdx
             this.setState({
                 leftActive: newStartIdx > 0,
-                rightActive: this.props.boxes.length > this.showLen + newStartIdx,
+                rightActive: this.props.boxes.length > this.state.showLen+ newStartIdx,
                 startIdx: newStartIdx
             })
         }
@@ -75,7 +77,7 @@ class StepRow extends React.Component {
     render () {
         if (!this.props.boxes || this.props.boxes.length == 0) return null
         let arrows = null
-        if (this.props.boxes.length > this.showLen) {
+        if (this.props.boxes.length > this.state.showLen) {
             arrows = <span>
                 <span className={`arrow fa fa-angle-left left ${this.state.leftActive ? 'active' : ''}`} onClick={this.prev.bind(this)}></span>
                 <span className={`arrow fa fa-angle-right right ${this.state.rightActive ? 'active' : ''}`} onClick={this.next.bind(this)}></span>
@@ -85,7 +87,7 @@ class StepRow extends React.Component {
         return (
             <div>
                 <div className={`row-fluid row-step`}>
-                    {this.props.boxes.slice(this.state.startIdx, this.state.startIdx + this.showLen).map(function (node, i) {
+                    {this.props.boxes.slice(this.state.startIdx, this.state.startIdx + this.state.showLen).map(function (node, i) {
                         return (
                             <div className="span3" key={i}>
                                 <Link to={`/create/${this.makeLinkStr(i)}`} className={i == this.props.ids[this.props.step]-this.state.startIdx ? 'active-light' : ''} activeClassName="active">
@@ -103,7 +105,7 @@ class StepRow extends React.Component {
     }
 }
 
-class Create extends React.Component {
+export default class extends React.Component {
     constructor (props) {
         super(props)
         let { id } = this.props.params
@@ -137,11 +139,15 @@ class Create extends React.Component {
     getParameters (data, ids) {
         const module = ids.reduce((module, id)=> {
             return module.children[id]
-        }, data) 
+        }, data)
+        this.setState({
+            loading: true
+        })
         Req.getParameter({module_id: module.id}, (newData)=> {
             this.setState({
                 parameters: newData,
-                module: module
+                module: module,
+                loading: false
             })
         }.bind(this))
     }
@@ -187,9 +193,9 @@ class Create extends React.Component {
                 <div className="span3 sidebar">
                     <Sidebar module={this.state.module} parameters={this.state.parameters} ids={this.state.ids} />
                 </div>
+                <div className={`loading ${this.state.loading ? '' : 'hide'}`}><i className="fa fa-spinner"></i></div>
             </div>
         );
     }
 }
 
-export default Create
