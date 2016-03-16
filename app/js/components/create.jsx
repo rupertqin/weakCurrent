@@ -33,52 +33,34 @@ class Sidebar extends React.Component {
 class StepRow extends React.Component {
     constructor (props) {
         super(props)
+        this.showLen = 3
         this.state = {
             startIdx: 0,
             boxes: this.props.boxes,
-            shownBoxes: this.props.boxes.slice(0,4)       
-        }
-    }
-
-    syncProps () {
-        if (this.props.boxes) {
-            this.setState({
-                boxes: this.props.boxes,
-                shownBoxes: this.props.boxes
-            })
-        } else {
-            // if r, root module
-            let parent_nth = this.props.ids[this.props.step - 1]
-            let parent_id = parent_nth == 'r' ? '' : this.props.parentBoxes[parent_nth].id
-            Req.getModule({parent_id: parent_id}, function(data){
-                console.log(data)
-                this.setState({
-                    boxes: data,
-                    shownBoxes: data.slice(0,4)
-                })
-            }.bind(this))
-        }
-    }
-
-    // componentDidMount () {
-    //     this.syncProps() 
-    // }
-
-    next () {
-        const len = this.state.boxes.length
-        let sIdx = this.state.startIdx
-        if (sIdx + 4 <= len -1) {
-            let newSIdx = ++this.state.startIdx
-            this.setState({shownBoxes: this.state.boxes.slice(newSIdx, newSIdx + 4)})
+            leftActive: false,
+            rightActive: this.props.boxes.length > this.showLen
         }
     }
 
     prev () {
-        const len = this.state.boxes.length
-        let sIdx = this.state.startIdx
-        if (sIdx > 0) {
-            let newSIdx = --this.state.startIdx
-            this.setState({shownBoxes: this.state.boxes.slice(newSIdx, newSIdx + 4)})
+        if (this.state.leftActive) {
+            const newStartIdx = --this.state.startIdx
+            this.setState({
+                leftActive: newStartIdx > 0,
+                rightActive: this.props.boxes.length > this.showLen + newStartIdx,
+                startIdx: newStartIdx
+            })
+        }
+    }
+
+    next () {
+        if (this.state.rightActive) {
+            const newStartIdx = ++this.state.startIdx
+            this.setState({
+                leftActive: newStartIdx > 0,
+                rightActive: this.props.boxes.length > this.showLen + newStartIdx,
+                startIdx: newStartIdx
+            })
         }
     }
 
@@ -92,36 +74,28 @@ class StepRow extends React.Component {
 
     render () {
         if (!this.props.boxes || this.props.boxes.length == 0) return null
-        let leftActive = ''
-        let rightActive = ''
-        let hide = ''
-
-        if (this.props.boxes.length <= 4) {
-            hide = " hidden "
-        } else {
-            if (this.props.startIdx > 0) {
-                leftActive = " active "
-            } 
-            if (this.props.startIdx + 4 < this.props.boxes.length ) {
-                rightActive = " active "
-            }
+        let arrows = null
+        if (this.props.boxes.length > this.showLen) {
+            arrows = <span>
+                <span className={`arrow fa fa-angle-left left ${this.state.leftActive ? 'active' : ''}`} onClick={this.prev.bind(this)}></span>
+                <span className={`arrow fa fa-angle-right right ${this.state.rightActive ? 'active' : ''}`} onClick={this.next.bind(this)}></span>
+            </span>
         }
-        
+
         return (
             <div>
                 <div className={`row-fluid row-step`}>
-                    {this.props.boxes.slice(0, 4).map(function (node, i) {
+                    {this.props.boxes.slice(this.state.startIdx, this.state.startIdx + this.showLen).map(function (node, i) {
                         return (
                             <div className="span3" key={i}>
-                                <Link to={`/create/${this.makeLinkStr(i)}`} activeClassName="active">
+                                <Link to={`/create/${this.makeLinkStr(i)}`} className={i == this.props.ids[this.props.step]-this.state.startIdx ? 'active-light' : ''} activeClassName="active">
                                     <img src={node.cover} className="cover" />
                                     <button className="btn">{node.name}</button>
                                 </Link>
                             </div>
                         )
                     }.bind(this))}
-                    <span className={`arrow fa fa-angle-left left ${leftActive} ${hide}`} onClick={this.prev.bind(this)}></span>
-                    <span className={`arrow fa fa-angle-right right ${rightActive} ${hide}`} onClick={this.next.bind(this)}></span>
+                    {arrows}
                     <span className={`arrow fa fa-angle-down`}></span>
                 </div>
             </div>

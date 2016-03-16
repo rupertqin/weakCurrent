@@ -27,11 +27,22 @@ button:focus, button:active {
     padding-bottom: 200px;
 }
 
+.opacity-05 {opacity: 0.5;}
+
 @mixin btn-green {
     color: #fff;
     background-image: linear-gradient(to bottom,#62c462,#51a351);
     border-color: #51a351 #51a351 #387038;
     background-color: #51a351;
+    opacity: 1;
+}
+
+@mixin btn-light-green {
+    color: #fff;
+    background-image: linear-gradient(to bottom,#62c462,#51a351);
+    border-color: #51a351 #51a351 #387038;
+    background-color: #51a351;
+    opacity: 0.5;
 }
 
 .Image {
@@ -173,6 +184,11 @@ h1 {
                 left: 50%;
                 color: $green!important;
                 margin-top: -1rem;
+            }
+        }
+        a.active-light {
+            .btn {
+                @include btn-light-green;
             }
         }
         a.active {
