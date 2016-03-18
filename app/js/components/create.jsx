@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
 import { Router, Route, Link, Redirect } from 'react-router'
 import _ from 'lodash'
 
@@ -105,7 +105,7 @@ class StepRow extends React.Component {
     }
 }
 
-export default class extends React.Component {
+class Create extends React.Component {
     constructor (props) {
         super(props)
         let { id } = this.props.params
@@ -137,18 +137,21 @@ export default class extends React.Component {
     }
 
     getParameters (data, ids) {
+        const {loading, closing} = this.props.route.loading
         const module = ids.reduce((module, id)=> {
             return module.children[id]
         }, data)
-        this.setState({
-            loading: true
-        })
+        loading()
+        // this.setState({
+        //     loading: true
+        // })
         Req.getParameter({module_id: module.id}, (newData)=> {
             this.setState({
                 parameters: newData,
-                module: module,
-                loading: false
+                module: module
+                // loading: false
             })
+            closing()
         }.bind(this))
     }
 
@@ -193,9 +196,11 @@ export default class extends React.Component {
                 <div className="span3 sidebar">
                     <Sidebar module={this.state.module} parameters={this.state.parameters} ids={this.state.ids} />
                 </div>
-                <div className={`loading ${this.state.loading ? '' : 'hide'}`}><i className="fa fa-spinner"></i></div>
             </div>
         );
     }
 }
+
+
+export default Create
 

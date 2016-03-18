@@ -1,7 +1,10 @@
 import React, { Component, PropTypes } from 'react'
 import { Router, Route, Link, IndexRoute, Redirect } from 'react-router'
+import { ReduxRouter, routerStateReducer, reduxReactRouter, pushState } from 'redux-router';
 import { createHistory, useBasename } from 'history'
-import { createStore } from 'redux'
+import { createStore, compose, combineReducers } from 'redux';
+import { Provider, connect } from 'react-redux';
+
 import Req from '../mod/request'
 import { Search } from './search.jsx'
 import { Login } from './login.jsx'
@@ -21,9 +24,6 @@ window.Commu = {
 }
 
 class Wrapper extends React.Component {
-    constructor (props) {
-        super(props)
-    }
     render() {
         return (
             <div className="wrapper">
@@ -31,35 +31,53 @@ class Wrapper extends React.Component {
                 <div className="main-content clearfix">
                     {this.props.children && React.cloneElement(this.props.children)}
                 </div>
+                <div className={`loading ${this.props.route.isLoading ? '' : 'hide'}`}><i className="fa fa-spinner"></i></div>
             </div>  
         )
     }
 }
 
-export default class appRoute extends React.Component {
+const reducer = combineReducers({
+  router: routerStateReducer
+});
+
+const store = compose(
+  reduxReactRouter({ createHistory })
+)(createStore)(reducer);
+
+class AppRoute extends React.Component {
+    constructor (props) {
+        super(props)
+        this.state = {
+            isLoading: false
+        }
+    }
     render() {
         return (
-            <Router>
-                <Route path="/" component={Wrapper}>
-                    <IndexRoute component={Search} />
-                    <Route path="search" component={Search} />
-                    <Route path="login" component={Login} />
-                    <Route path="reg" component={Reg} />
-                    <Route path="solutions" component={Solutions} />
-                    <Route path="create/:id" component={Create}>
-                        <IndexRoute onEnter={function (location, replaceState) {
-                            if (!location.params.id) replaceState(null, '/create/0')
-                        }} />
+            <Provider store={store}>
+                <ReduxRouter>
+                    <Route path="/" isLoading={this.props.isLoading} component={Wrapper}>
+                        <IndexRoute component={Search} />
+                        <Route path="search" component={Search} />
+                        <Route path="login" component={Login} />
+                        <Route path="reg" component={Reg} />
+                        <Route path="solutions" component={Solutions} />
+                        <Route path="create/:id" {...this.props} component={Create}>
+                            <IndexRoute onEnter={function (location, replaceState) {
+                                if (!location.params.id) replaceState(null, '/create/0')
+                            }} />
+                        </Route>
+                        <Route path="products" component={Products} />
+                        <Route path="doc-generation/:docId" {...this.props} component={DocGeneration} />
+                        <Route path="*" component={NoMatch}/>
                     </Route>
-                    <Route path="products" component={Products} />
-                    <Route path="doc-generation/:docId" {...this.props} component={DocGeneration} />
-                    <Route path="*" component={NoMatch}/>
-                </Route>
-            </Router>
+                </ReduxRouter>
+            </Provider>
         )
     }
 }
 
+export default AppRoute
 
 // do not use history in IE
 // const u = navigator.userAgent
