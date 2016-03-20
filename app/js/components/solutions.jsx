@@ -54,47 +54,30 @@ class Solution extends React.Component {
 }
 
 export default class Solutions extends React.Component {
-    constructor (props) {
+    constructor (props){
         super(props)
         this.state = {
         }
     }
 
-    flattenData (arr) {
-        return arr.map((solution)=> {
-            if (!solution.modules) {
-                solution.modules = []
-            } 
-            let modules = solution.modules
-            for (let i=0;i<modules.length;i++) {
-                let children = modules[i].children
-                if (children && children.length) {
-                    [].push.apply(modules, children)
-                    delete modules[i].children
-                }
-            }
-            return solution
-        })
-    }
-
-    componentDidMount () {
+    componentDidMount (){
         Req.getSolutions({}, function(newData) {
             this.setState({
-                solutions: this.flattenData(newData)
+                solutions: util.flattenSolutions(newData)
             })
         }.bind(this))
     }
 
-    search (e) {
+    search (e){
         e.preventDefault()
         Req.getSolutions({keyword: this.refs.keyword.value}, function(newData) {
             this.setState({
-                solutions: this.flattenData(newData)
+                solutions: util.flattenSolutions(newData)
             })
         }.bind(this))
     }
 
-    render() {
+    render (){
         if (!this.state.solutions) return null
 
         return (

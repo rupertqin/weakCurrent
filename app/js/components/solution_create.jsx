@@ -16,15 +16,23 @@ class Sidebar extends React.Component {
     componentWillUnmount () {
     }
 
+    save () {
+        let formArr = _.toArray(this.refs.form)
+        let answers = formArr.map((field)=> field.value )
+        this.props.markAndSaveAnswers(answers)
+    }
+
     render() {
         if (!this.props.parameters) {return (<i class="fa fa-spinner"></i>)}
         const nextPath = `/create/step/${this.props.ids.concat(0).join('-')}`
         return (
             <div className='navbar-inner'>
                 <h3>{this.props.module.name}</h3>
-                <Items items={this.props.parameters} />
+                <form className='items form-horizontal' ref='form'>
+                    <Items items={this.props.parameters} />
+                </form>
                 <div className='bottom'>
-                    <Link className='btn btn-success next' to={nextPath}>生成</Link>
+                    <span className='btn btn-success next' onClick={this.save.bind(this)}>选择并保存</span>
                 </div>
             </div>
         )
@@ -115,27 +123,6 @@ class Create extends React.Component {
         }
     }
 
-    tierData (arr) {
-        let root =  {}
-        function findChildren(node){
-            for (let i=0; i< arr.length;i++) {
-                if (!arr[i].parent_id || arr[i].parent_id == node.id) { 
-                    if (!node.children) node.children = [] 
-                    node.children.push(arr[i])
-                    arr.splice(i, 1)
-                    i--
-                }
-            }
-            if (node.children) {
-                for (var i = 0; i < node.children.length; i++) {
-                    findChildren(node.children[i])
-                }
-            }
-        }
-        findChildren(root)    
-        return root
-    }
-
     getParameters (data, ids) {
         const {loading, closing} = this.props.route.loading
         const module = ids.reduce((module, id)=> {
@@ -156,8 +143,8 @@ class Create extends React.Component {
     }
 
     componentDidMount () {
-        Req.getModule({}, (arr)=> {
-            let newData = this.tierData(arr)
+        Req.getModule({per_page: 1000}, (arr)=> {
+            let newData = util.tierData(arr)
             const ids = this.props.params.id.split('-')  
             this.setState({
                 data: newData
@@ -176,6 +163,64 @@ class Create extends React.Component {
         }
     }
 
+    getLineData () {
+        let rv = {children: []}
+        let moduleArr = []
+        this.state.ids.forEach((id)=> {
+
+            module = data.children[id]
+            rvModule = rv.children[0]
+            rv.children[0] = {
+                id: module.id,
+                name: module.name,
+                description: module.description,
+                poster: module.poster,
+                answers: module.answers,
+                children: []
+            }
+        })
+        return rv
+    }
+
+    createSolution () {
+        // flatten & filter 'saved' modules
+        let moduleArr = util.flattenData( _.cloneDeep(this.state.data.children) )
+        moduleArr = _.filter(moduleArr, 'saved')
+        if (!moduleArr.length) return alert('请先选择模块！')
+        let tierData = util.tierData(moduleArr).children
+
+        const data = {
+            name: '新系统标题',
+            description: '新系统描述',
+            price_range: [1000, 99999],
+            modules: tierData
+        }
+        console.log(data)
+        Req.createSolution(data, (fb)=> {
+            if (fb.id) {
+                alert('创建成功！')
+                window.location.assign("/solutions")
+            }
+        })
+    }
+
+    markAndSaveAnswers (answers) {
+        // mark as saved
+        let module = this.state.data
+        this.state.ids.forEach((id)=> {
+            module.children[id].saved = true
+            module = module.children[id]
+        })
+
+        // save current answers
+        module.answers = answers
+
+        // module.answers
+        this.setState({
+            data: this.state.data
+        })
+    }
+
     render() {
         if (!this.state.module) return null
         const mainClassName= "row-fluid show-grid page-create step-" + this.state.ids[0] 
@@ -184,7 +229,7 @@ class Create extends React.Component {
             <div className={mainClassName}>
                 <div className="span9">
                     <div className="page-header">
-                        <h1>xxx 方案</h1>
+                        <h1>xxx 方案 <span className='btn btn-success' onClick={this.createSolution.bind(this)}>生成</span></h1>
                     </div>
                     <StepRow ids={this.state.ids} boxes={boxes} parentBoxes={boxes} step={0} />
                     { this.state.ids.map(function(id, i){
@@ -194,7 +239,7 @@ class Create extends React.Component {
                     }.bind(this))}
                 </div>
                 <div className="span3 sidebar">
-                    <Sidebar module={this.state.module} parameters={this.state.parameters} ids={this.state.ids} />
+                    <Sidebar module={this.state.module} markAndSaveAnswers={this.markAndSaveAnswers.bind(this)} parameters={this.state.parameters} ids={this.state.ids} />
                 </div>
             </div>
         );

@@ -55,12 +55,12 @@ class Items extends React.Component {
 
     render() {
         return (
-            <form className='items form-horizontal'>
+            <div>
                 {this.props.items.map(function (item, i) {
                     console.log(item);
                     return <Item data={item} key={i} />
                 }.bind(this))}
-            </form>
+            </div>
         )
     }
 }

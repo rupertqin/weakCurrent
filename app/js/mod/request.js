@@ -12,8 +12,16 @@ function _get(url, fn) {
 }
 
 function _post(url, data, fn) {
+    var myHeaders = new Headers({
+        "Content-Type": "application/json"
+    });
     var myRequest = new Request(config.apiPreURL + url)
-    fetch(myRequest, {method: 'POST',body: JSON.stringify(data)}).then(function(response) { 
+    fetch(myRequest, {
+        method: 'POST',
+        headers: myHeaders,
+        body: JSON.stringify(data)
+    })
+    .then(function(response) { 
         response.json().then(fn)
     })
 }
@@ -26,7 +34,7 @@ function _2searchObj(params) {
     return arr.join('&')
 }
 
-class Req{
+class Req {
     getCreateData () {
         return createData
     }
@@ -52,7 +60,7 @@ class Req{
         return _get('paper?' + _2searchObj(params), fn)
     }
     createSolution(data, fn) {
-        return _post('solution?' + data, fn)
+        return _post('solution', data, fn)
     }
 }
 
