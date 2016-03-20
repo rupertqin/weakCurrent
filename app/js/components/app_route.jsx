@@ -11,18 +11,13 @@ import { Login } from './login.jsx'
 import Reg from './reg.jsx'
 import Solutions from './solutions.jsx'
 import { Navbar } from './navbar.jsx'
-import Create from './create.jsx'
+import SolutionCreate from './solution_create.jsx'
 import DocGeneration from './doc_generation.jsx'
 import Products from './products.jsx'
 import { NoMatch } from './404.jsx'
 
-// Global communicate subscript/dispac
-window.Commu = {
-    price: 0,
-    el: document.createElement('div'),
-    event: new Event('compuPrice')
-}
 
+@connect((state) => ({}))
 class Wrapper extends React.Component {
     render() {
         return (
@@ -62,7 +57,7 @@ class AppRoute extends React.Component {
                         <Route path="login" component={Login} />
                         <Route path="reg" component={Reg} />
                         <Route path="solutions" component={Solutions} />
-                        <Route path="create/:id" {...this.props} component={Create}>
+                        <Route path="create/:id" {...this.props} component={SolutionCreate}>
                             <IndexRoute onEnter={function (location, replaceState) {
                                 if (!location.params.id) replaceState(null, '/create/0')
                             }} />

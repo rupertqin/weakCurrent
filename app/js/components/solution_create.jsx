@@ -24,7 +24,7 @@ class Sidebar extends React.Component {
                 <h3>{this.props.module.name}</h3>
                 <Items items={this.props.parameters} />
                 <div className='bottom'>
-                    <Link className='btn btn-success next' to={nextPath}>选择子模块</Link>
+                    <Link className='btn btn-success next' to={nextPath}>生成</Link>
                 </div>
             </div>
         )

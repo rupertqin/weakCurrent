@@ -62,6 +62,9 @@ export default class Solutions extends React.Component {
 
     flattenData (arr) {
         return arr.map((solution)=> {
+            if (!solution.modules) {
+                solution.modules = []
+            } 
             let modules = solution.modules
             for (let i=0;i<modules.length;i++) {
                 let children = modules[i].children
@@ -82,7 +85,8 @@ export default class Solutions extends React.Component {
         }.bind(this))
     }
 
-    search () {
+    search (e) {
+        e.preventDefault()
         Req.getSolutions({keyword: this.refs.keyword.value}, function(newData) {
             this.setState({
                 solutions: this.flattenData(newData)

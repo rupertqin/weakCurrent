@@ -11,6 +11,13 @@ function _get(url, fn) {
     })
 }
 
+function _post(url, data, fn) {
+    var myRequest = new Request(config.apiPreURL + url)
+    fetch(myRequest, {method: 'POST',body: JSON.stringify(data)}).then(function(response) { 
+        response.json().then(fn)
+    })
+}
+
 function _2searchObj(params) {
     var arr = []
     for (var k in params) {
@@ -43,6 +50,9 @@ class Req{
     }
     getPapers(params, fn) {
         return _get('paper?' + _2searchObj(params), fn)
+    }
+    createSolution(data, fn) {
+        return _post('solution?' + data, fn)
     }
 }
 

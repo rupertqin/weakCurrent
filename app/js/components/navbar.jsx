@@ -34,13 +34,13 @@ class Navbar extends React.Component {
                                 <i className="icon-remove"></i>
                             </button>
                             <div className="logo">
-                                <img src="img/logo-s.jpg" />
+                                <img src="/img/logo-s.jpg" />
                             </div>
                             <div className="nav-collapse in collapse">
                                 <ul className="nav">
                                     <li><Link to="/search" activeClassName="active">首页</Link></li>
                                     <li><Link to="/solutions">我的方案</Link></li>
-                                    <li><Link to="/">知识库</Link></li>
+                                    <li><Link to="/products">知识库</Link></li>
                                     <li><Link to="/">新闻中心</Link></li>
                                     <li><Link to="/">关于我们</Link></li>
                                 </ul>
