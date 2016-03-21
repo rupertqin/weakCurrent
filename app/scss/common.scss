@@ -437,14 +437,14 @@ header {
     }
 }
 
-.page-dco-generation {
+.page-paper-create {
     h1 {
         text-align: center;
     }
     text-align: left;
     .container {
         width: 100%;
-        .item {
+        .section {
             padding: 0.5em 2em 1.5em; 
             border-top: 1px solid #999;
 
@@ -455,6 +455,9 @@ header {
             h3 {
                 font-size: 14px;
             }
+            .param {
+                border-bottom: 1px solid $green;
+            }
         }
     }
     .side-bar {
@@ -463,10 +466,11 @@ header {
         top: 0;
         background: #eee;
         min-width: 300px;
+        width: 25.65%;
         height: 100%;
         margin-left: 0;
-        padding: 2em;
-        color: $green;
+        padding: 1.5em;
+        /*color: $green;*/
         .inner {
             position: relative;
             height: inherit;
@@ -475,6 +479,9 @@ header {
             }
             input[type=text] {
                 width: 60px;
+            }
+            select {
+                width: 100%;
             }
             .bottom {
                 position: absolute;

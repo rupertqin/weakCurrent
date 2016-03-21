@@ -117,8 +117,9 @@ class SideBar extends Component {
                         if (param.type == "text") {
                             questionDom = (
                                 <div className="control-group" key={i}>
+                                    <label className="control-label ellipsis">{key}</label>
                                     <div className="controls">
-                                        {key}:<input type="text" name={key} />
+                                        <input type="text" name={key} />
                                     </div>
                                 </div>
                             )
@@ -126,8 +127,9 @@ class SideBar extends Component {
                         } else if (param.type == "select") {
                             questionDom = (
                                 <div className="control-group" key={i}>
+                                    <label className="control-label ellipsis">{key}</label>
                                     <div className="controls">
-                                        {key}: <select name={key}>
+                                        <select name={key}>
                                             {param.options.map(function (value, j) {
                                                 return (
                                                     <option name={`optionsRadios`} value={j} key={j}>
@@ -148,7 +150,7 @@ class SideBar extends Component {
         return (
             <div className={classnames({'side-bar span3': true,'hide': !this.props.isSideBarOpen})}>
                 <div className="inner">
-                    <form onSubmit={this.handleSave.bind(this)} ref="form">
+                    <form className="form-horizontal" onSubmit={this.handleSave.bind(this)} ref="form">
                         {tpl}
                         <div className="bottom">
                             <button className="btn btn-success btn-small">保存</button>
@@ -231,9 +233,9 @@ class PaperCreate extends Component {
             }
 
             let p = new RegExp(`{{ ${key} }}`, 'g')
-            rv = rv.replace(p, answer)
+            rv = rv.replace(p, `<span class="param">${answer}</span>`)
         }
-        return rv
+        return `<span>${rv}</span>`
     }
 
     save (item) {
@@ -263,7 +265,7 @@ class PaperCreate extends Component {
         const { generation, incrementIfOdd, incrementAsync, decrement, counter } = this.props.route
         let data = this.state.data
         return (
-            <div className="page-dco-generation"> 
+            <div className="page-paper-create"> 
                 <header className="row-fluid">
                     <div className="span3"><h1>文书生成</h1></div>
                     <div className={'span2 ' + (this.state.isSideBarOpen ? 'offset4' : 'offset7')}>
@@ -273,7 +275,7 @@ class PaperCreate extends Component {
                 </header>
                 <div className="container row-fluid">
                     <div className={this.state.isSideBarOpen ? 'span9' : ''}>
-                        <div className="item">
+                        <div className="section">
                             <h2>
                                 {data.title}
                                 <button className="btn btn-mini btn-success" 
@@ -281,24 +283,24 @@ class PaperCreate extends Component {
                                 >编辑</button>
                             </h2>
                         </div> 
-                        <div className="item">
+                        <div className="section">
                             <h3>
                                 文书描述：
                                 <button className="btn btn-mini btn-success"
                                         onClick={this.edit.bind(this, 'description', data.description)}
                                 >编辑</button>
                             </h3>
-                            <div className="" dangerouslySetInnerHTML={{__html: data.description}}></div>
+                            <div className="">{data.description}</div>
                         </div>
                         { this.state.data.sections.map((section,i)=> {
-                            return <div className="item" key={i}>
+                            return <div className="section" key={i}>
                                 <h3>
                                     Section: 
                                     <button className="btn btn-mini btn-success"
                                             onClick={this.edit.bind(this, 'sections', section, i)}
                                     >编辑</button>
                                 </h3>
-                                <div className=""> {this.getSectionTrueText(section)} </div>
+                                <div className="" dangerouslySetInnerHTML={{__html: this.getSectionTrueText(section)}} />
                             </div>
                         })}
                     </div>

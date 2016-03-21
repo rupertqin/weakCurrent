@@ -29,8 +29,8 @@ class Sidebar extends React.Component {
             <div className='navbar-inner'>
                 <h3>{this.props.module.name}</h3>
                 <form className='items form-horizontal' ref='form'>
-                    { this.props.parameters.map((item)=> {
-                        return <Item data={item} />
+                    { this.props.parameters.map((item,i)=> {
+                        return <Item key={i} data={item} />
                     })}
                 </form>
                 <div className='bottom'>
