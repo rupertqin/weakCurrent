@@ -6,9 +6,9 @@ import _ from 'lodash'
 import Req from '../mod/request'
 
 class Box extends React.Component {
-    // constructor () {
-    //     super()
-    // }
+    constructor () {
+        super()
+    }
     render() {
         let priceTxt = ''
         if (this.props.data.priceRange) {
@@ -29,6 +29,15 @@ class Box extends React.Component {
 class Solution extends React.Component {
     constructor () {
         super()
+        this.state = {
+            isDropDownMenuOpen: false
+        }
+    }
+
+    toggle (){
+        this.setState({
+            isDropDownMenuOpen: !this.state.isDropDownMenuOpen
+        })
     }
 
     render() {
@@ -44,8 +53,22 @@ class Solution extends React.Component {
                     <p className="des">{this.props.data.description}</p>
                     <div className="bottom">
                         <p className="price">预估价格<br/>{this.props.data.price_least}~{this.props.data.price_most}元</p>
-                        <button className="btn btn-success">编辑</button>
-                        <Link to={`/doc-generation/${this.props.data.id}/`} className="btn btn-success">生成文书</Link>
+                        <Link to={`/solution/${this.props.data.id}/edit`} className="btn btn-success">编辑</Link>
+                        <div className={`btn-group ${this.state.isDropDownMenuOpen ? 'open':''}`}>
+                            <span className="btn dropdown-toggle btn-success" href="#" onClick={this.toggle.bind(this)}>
+                                生成文书
+                                <span className="caret"></span>
+                            </span>
+                            <ul className="dropdown-menu">
+                                { this.props.templates.map((tpl, i)=> {
+                                    return <li key={tpl.id}>
+                                        <Link to={`/paper-create/${this.props.data.id}-${tpl.id}`} className="btn btn-success">
+                                            模板：{tpl.title}
+                                        </Link>
+                                    </li>
+                                })}
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -66,6 +89,12 @@ export default class Solutions extends React.Component {
                 solutions: util.flattenSolutions(newData)
             })
         }.bind(this))
+        
+        Req.getTemplate({}, function(data) {
+            this.setState({
+                templates: data
+            })
+        }.bind(this))
     }
 
     search (e){
@@ -78,7 +107,7 @@ export default class Solutions extends React.Component {
     }
 
     render (){
-        if (!this.state.solutions) return null
+        if (!this.state.solutions || !this.state.templates) return null
 
         return (
             <div className="page-solutions"> 
@@ -94,7 +123,7 @@ export default class Solutions extends React.Component {
                             </button>
                         </div>
                     </form> 
-                    {this.state.solutions.map((cs,i) => <Solution key={i} data={cs}></Solution>)}
+                    {this.state.solutions.map((cs,i) => <Solution key={i} templates={this.state.templates} data={cs}></Solution>)}
                 </div> 
             </div> 
         )

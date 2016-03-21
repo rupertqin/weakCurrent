@@ -3,6 +3,7 @@ import ReactUpdate from 'react-addons-update'
 import { Router, Route, Link, Redirect } from 'react-router'
 import _ from 'lodash'
 import classnames from 'classnames'
+import linkState from 'react-link-state'
 
 
 import Req from '../mod/request'
@@ -84,8 +85,6 @@ class SideBar extends Component {
                             onChange={this.changeTextArae.bind(this)}
                             ref='newTxt' />
                     </div>
-                    <span>示例一</span>
-                    <span>示例二</span>
                 </div>
                 break;
             case 'text':
@@ -97,9 +96,6 @@ class SideBar extends Component {
                             onChange={this.changeTextArae.bind(this)}
                             ref='newTxt' />
                     </div>
-                    <span>示例一</span>
-                    <span>示例二</span>
-                    <span>示例三</span>
                 </div>
                 break;
             case 'advance':
@@ -185,9 +181,12 @@ Item.propTypes = {
 
 
 class DocGeneration extends Component {
-    constructor () {
-        super()
+    constructor (props){
+        super(props)
+        let { sId, tId } = this.props.params
         this.state = {
+            sId: sId,
+            tId: tId,
             isSideBarOpen: false,
             question: {
                 type: '',
@@ -195,17 +194,16 @@ class DocGeneration extends Component {
             }
         }
     }
-    componentDidMount () {
-        // ajax get data
-        setTimeout(()=> {
-            let data = Req.getDocGenerationData(this.props.params.docId)
-            console.log(data)
+
+    componentDidMount (){
+        Req.getTemplate(this.state.tId, (data)=> {
             this.setState({
-                data: data
+                data: data 
             })
-        }, 300)
+        })
     }
-    edit (key, item) {
+
+    edit (key, item){
         this.setState({
             isSideBarOpen: true,
             editKey: key,
@@ -229,13 +227,6 @@ class DocGeneration extends Component {
                 break;
 
         }
-        // if (this.state.question.editType == 'title') {
-        //     newData = ReactUpdate(this.state.data, { name: {$set: text} })
-        // } else {
-        //     let itemData = {}
-        //     let items = ReactUpdate(this.state.data.items, itemData)
-        //     newData = ReactUpdate(this.state.data, {$merge: {items: items}})
-        // }
         this.setState({
             data: newData,
             isSideBarOpen: false
@@ -245,7 +236,7 @@ class DocGeneration extends Component {
         if (!this.state.data) return null
 
         const { generation, incrementIfOdd, incrementAsync, decrement, counter } = this.props.route
-        let DocData = this.state.data
+        let data = this.state.data
         return (
             <div className="page-dco-generation"> 
                 <header className="row-fluid">
@@ -259,66 +250,32 @@ class DocGeneration extends Component {
                     <div className={this.state.isSideBarOpen ? 'span9' : ''}>
                         <div className="item">
                             <h2>
-                                {DocData.title.name}
+                                {data.title}
                                 <button className="btn btn-mini btn-success" 
-                                        onClick={this.edit.bind(this, 'title', DocData.title)}
+                                        onClick={this.edit.bind(this, 'title', data.title)}
                                 >编辑</button>
                             </h2>
                         </div> 
                         <div className="item">
                             <h3>
-                                {DocData.background.name} 
+                                文书描述：
                                 <button className="btn btn-mini btn-success"
-                                        onClick={this.edit.bind(this, 'background', DocData.background)}
+                                        onClick={this.edit.bind(this, 'description', data.description)}
                                 >编辑</button>
                             </h3>
-                            <div className="" dangerouslySetInnerHTML={{__html: DocData.background.content}}></div>
+                            <div className="" dangerouslySetInnerHTML={{__html: data.description}}></div>
                         </div>
-                        <div className="item">
-                            <h3>
-                                {DocData.standard.name} 
-                                <button className="btn btn-mini btn-success"
-                                        onClick={this.edit.bind(this, 'standard', DocData.standard)}
-                                >编辑</button>
-                            </h3>
-                            <div className="" dangerouslySetInnerHTML={{__html: DocData.standard.content}}></div>
-                        </div>
-                        <div className="item">
-                            <h3>
-                                {DocData.system.name} 
-                                <button className="btn btn-mini btn-success"
-                                        onClick={this.edit.bind(this, 'system', DocData.system)}
-                                >编辑</button>
-                            </h3>
-                            <div className="" dangerouslySetInnerHTML={{__html: DocData.system.content}}></div>
-                        </div>
-                        <div className="item">
-                            <h3>
-                                {DocData.overall.name} 
-                                <button className="btn btn-mini btn-success"
-                                        onClick={this.edit.bind(this, 'overall', DocData.overall)}
-                                >编辑</button>
-                            </h3>
-                            { DocData.overall.questions.map(function (item, i) {
-
-                                let itemDom;
-                                if (item.type == "fillIn") {
-                                    itemDom = (
-                                        <div className="control-group" key={i}>
-                                            <label className="control-label" htmlFor={`inputWarning${i}`}>{item.text.replace('<>', item.value)}</label>
-                                        </div>
-                                    )
-                                } else if (item.type == "radio") {
-                                    itemDom = (
-                                        <div className="control-group" key={i}>
-                                            <label className="control-label">{item.text}:{item.options[item.value]}</label>
-                                        </div>
-                                    )
-                                }
-                                return itemDom;
-
-                            }.bind(this))}
-                        </div>
+                        { this.state.data.sections.map((section,i)=> {
+                            return <div className="item" key={i}>
+                                <h3>
+                                    Section: 
+                                    <button className="btn btn-mini btn-success"
+                                            onClick={this.edit.bind(this, 'section', section)}
+                                    >编辑</button>
+                                </h3>
+                                <div className="" dangerouslySetInnerHTML={{__html: section.text}}></div>
+                            </div>
+                        })}
                     </div>
                     <SideBar isSideBarOpen={this.state.isSideBarOpen} save={this.save.bind(this)} item={this.state.question} />
                 </div>

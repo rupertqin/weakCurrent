@@ -12,7 +12,7 @@ import Reg from './reg.jsx'
 import Solutions from './solutions.jsx'
 import { Navbar } from './navbar.jsx'
 import SolutionCreate from './solution_create.jsx'
-import DocGeneration from './doc_generation.jsx'
+import PaperCreate from './paper_create.jsx'
 import Products from './products.jsx'
 import { NoMatch } from './404.jsx'
 
@@ -56,14 +56,17 @@ class AppRoute extends React.Component {
                         <Route path="search" component={Search} />
                         <Route path="login" component={Login} />
                         <Route path="reg" component={Reg} />
+
                         <Route path="solutions" component={Solutions} />
-                        <Route path="create/:id" {...this.props} component={SolutionCreate}>
+                        <Route path="solution-create/:id" {...this.props} component={SolutionCreate}>
                             <IndexRoute onEnter={function (location, replaceState) {
-                                if (!location.params.id) replaceState(null, '/create/0')
+                                if (!location.params.id) replaceState(null, 'solution-create/0')
                             }} />
                         </Route>
+                        <Route path="solution/:id/edit" {...this.props} component={SolutionCreate} />
+
                         <Route path="products" component={Products} />
-                        <Route path="doc-generation/:docId" {...this.props} component={DocGeneration} />
+                        <Route path="paper-create/:sId-:tId" {...this.props} component={PaperCreate} />
                         <Route path="*" component={NoMatch}/>
                     </Route>
                 </ReduxRouter>

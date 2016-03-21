@@ -6,7 +6,7 @@ var Buttons = React.createClass({
         return  (
             <div>
                 <button className="btn btn-success" type="button">搜索</button>
-                <Link className="btn btn-success" to="/create/0">新建</Link>
+                <Link className="btn btn-success" to="/solution-create/">新建</Link>
             </div>
 
         )

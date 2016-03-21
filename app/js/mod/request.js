@@ -56,8 +56,14 @@ class Req {
     getSolutions(params, fn) {
         return _get('solution?' + _2searchObj(params), fn)
     }
+    getTemplate(id, fn) {
+        return _get(`template/${id}`, fn)
+    }
     getPapers(params, fn) {
         return _get('paper?' + _2searchObj(params), fn)
+    }
+    createPaper(data, fn) {
+        return _post('paper', data, fn)
     }
     createSolution(data, fn) {
         return _post('solution', data, fn)
