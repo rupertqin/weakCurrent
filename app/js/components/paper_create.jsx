@@ -16,7 +16,7 @@ class SideBar extends Component {
         }
     }
     componentWillReceiveProps (nextProps) {
-        this.setState({item: nextProps.item})
+        this.setState({data: nextProps.data})
     }
     // shouldComponentUpdate (nextProps, nextState) {
     //     return !!(nextProps.item && nextProps.item.name !== undefined)
@@ -62,27 +62,30 @@ class SideBar extends Component {
         let saveFn
         switch (this.state.editKey) {
             case 'title':
-                this.props.save(this.state.item)
+                this.props.save(this.state.data)
                 break;
             case 'description':
-                this.props.save(this.state.item)
+                this.props.save(this.state.data)
                 break;
             default:
-                this.props.save(this.state.item)
+                for (var key in this.state.data.params) {
+                    this.state.data.params[key].answer = this.refs.form[key].value
+                }
+                this.props.save(this.state.data)
         }
     }
 
     choose (i, question, j) {
         let questionObj = {}
         questionObj[i] = {value:  {$set: j}}
-        let item = ReactUpdate(this.state.item, {questions: questionObj})
+        let data= ReactUpdate(this.state.data, {questions: questionObj})
         this.setState({
-            item: item
+            data: data
         })
     }
 
     render() {
-        if (!this.props.item) return null
+        if (!this.props.data) return null
         let tpl
         switch (this.props.editKey) {
             case 'title':
@@ -90,7 +93,7 @@ class SideBar extends Component {
                     <h4>标题</h4>
                     <div>
                         <textarea rows="8" 
-                            valueLink={linkState(this, 'item')}
+                            valueLink={linkState(this, 'data')}
                             ref='newTxt' />
                     </div>
                 </div>
@@ -100,7 +103,7 @@ class SideBar extends Component {
                 tpl = <div>
                     <div>
                         <textarea rows="8" 
-                            valueLink={linkState(this, 'item')}
+                            valueLink={linkState(this, 'data')}
                             ref='newTxt' />
                     </div>
                 </div>
@@ -108,35 +111,31 @@ class SideBar extends Component {
 
             default:
                 tpl = <div>
-                    <h4>{this.props.item.name}</h4>
-                    {this.state.item.questions.map(function (question, i) {
-                        let questionDom;
-                        if (question.type == "fillIn") {
+                    { Object.keys(this.state.data.params).map(function (key, i) {
+                        let param = this.state.data.params[key]
+                        let questionDom
+                        if (param.type == "text") {
                             questionDom = (
                                 <div className="control-group" key={i}>
                                     <div className="controls">
-                                        {this.replaceWithInput(question, i)}
+                                        {key}:<input type="text" name={key} />
                                     </div>
                                 </div>
                             )
 
-                        } else if (question.type == "radio") {
+                        } else if (param.type == "select") {
                             questionDom = (
                                 <div className="control-group" key={i}>
-                                    <label className="control-label">{question.text}:</label>
                                     <div className="controls">
-                                    {question.options.map(function (option, j) {
-                                        return (
-                                            <label key={j}>
-                                                <input type="radio" 
-                                                    checked={question.value == j}
-                                                    onChange={this.choose.bind(this, i, question, j)}
-                                                    name={`optionsRadios${i}`} 
-                                                    value="option1" />
-                                                <a className="btn">{option}</a>
-                                            </label>
-                                        )
-                                    }.bind(this))}
+                                        {key}: <select name={key}>
+                                            {param.options.map(function (value, j) {
+                                                return (
+                                                    <option name={`optionsRadios`} value={j} key={j}>
+                                                        {value}
+                                                    </option>
+                                                )
+                                            })}
+                                        </select>
                                     </div>
                                 </div>
                             )
@@ -149,7 +148,7 @@ class SideBar extends Component {
         return (
             <div className={classnames({'side-bar span3': true,'hide': !this.props.isSideBarOpen})}>
                 <div className="inner">
-                    <form onSubmit={this.handleSave.bind(this)}>
+                    <form onSubmit={this.handleSave.bind(this)} ref="form">
                         {tpl}
                         <div className="bottom">
                             <button className="btn btn-success btn-small">保存</button>
@@ -211,12 +210,30 @@ class PaperCreate extends Component {
         })
     }
 
-    edit (key, item){
+    edit (key, item, idx){
         this.setState({
             isSideBarOpen: true,
             editKey: key,
-            question: item
+            question: item,
+            idx: idx
         })
+    }
+
+    getSectionTrueText (section){
+        let rv = section.text
+        for (var key in section.params){
+            let answer = section.params[key].answer
+            if (!answer) continue;
+
+            // get select value
+            if (section.params[key].type == 'select') {
+                answer = section.params[key].options[answer]
+            }
+
+            let p = new RegExp(`{{ ${key} }}`, 'g')
+            rv = rv.replace(p, answer)
+        }
+        return rv
     }
 
     save (item) {
@@ -230,9 +247,9 @@ class PaperCreate extends Component {
                 setObj[this.state.editKey] = {$set: item}
                 newData = ReactUpdate(this.state.data, setObj)
                 break;
-            case 'advance':
-                setObj.overall = {$set: item}
-                newData = ReactUpdate(this.state.data, setObj)
+            default:
+                this.state.data.sections[this.state.idx] = item
+                newData = this.state.data
         }
         this.setState({
             data: newData,
@@ -278,14 +295,14 @@ class PaperCreate extends Component {
                                 <h3>
                                     Section: 
                                     <button className="btn btn-mini btn-success"
-                                            onClick={this.edit.bind(this, 'sections', section)}
+                                            onClick={this.edit.bind(this, 'sections', section, i)}
                                     >编辑</button>
                                 </h3>
-                                <div className="" dangerouslySetInnerHTML={{__html: section.text}}></div>
+                                <div className=""> {this.getSectionTrueText(section)} </div>
                             </div>
                         })}
                     </div>
-                    <SideBar isSideBarOpen={this.state.isSideBarOpen} save={this.save.bind(this)} editKey={this.state.editKey} item={this.state.question} />
+                    <SideBar isSideBarOpen={this.state.isSideBarOpen} save={this.save.bind(this)} editKey={this.state.editKey} data={this.state.question} />
                 </div>
             </div> 
         )
