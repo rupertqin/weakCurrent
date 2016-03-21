@@ -53,8 +53,11 @@ class Req {
     getParameter(params, fn) {
         return _get('parameter?' + _2searchObj(params), fn)
     }
-    getSolutions(params, fn) {
+    getSolutionList(params, fn) {
         return _get('solution?' + _2searchObj(params), fn)
+    }
+    getTemplateList(fn) {
+        return _get('template', fn)
     }
     getTemplate(id, fn) {
         return _get(`template/${id}`, fn)

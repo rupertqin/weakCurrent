@@ -10,6 +10,11 @@ class Item extends React.Component {
         }
     }
 
+    replaceWithInput (context, i) {
+        var html = context.replace('<>', '<input type="text" value="" id="inputWarning' + i + '" />')
+        return {__html: html}
+    }
+
     render() {
         let itemDom;
         if (this.props.data.type == "text") {
@@ -43,26 +48,5 @@ class Item extends React.Component {
 
     }
 }
-class Items extends React.Component {
-    constructor () {
-        super()
-    }
 
-    replaceWithInput (context, i) {
-        var html = context.replace('<>', '<input type="text" value="" id="inputWarning' + i + '" />')
-        return {__html: html}
-    }
-
-    render() {
-        return (
-            <div>
-                {this.props.items.map(function (item, i) {
-                    console.log(item);
-                    return <Item data={item} key={i} />
-                }.bind(this))}
-            </div>
-        )
-    }
-}
-
-export {Items}
+export {Item}

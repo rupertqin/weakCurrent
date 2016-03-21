@@ -84,13 +84,13 @@ export default class Solutions extends React.Component {
     }
 
     componentDidMount (){
-        Req.getSolutions({}, function(newData) {
+        Req.getSolutionList({}, function(newData) {
             this.setState({
                 solutions: util.flattenSolutions(newData)
             })
         }.bind(this))
         
-        Req.getTemplate({}, function(data) {
+        Req.getTemplateList(function(data) {
             this.setState({
                 templates: data
             })
@@ -99,7 +99,7 @@ export default class Solutions extends React.Component {
 
     search (e){
         e.preventDefault()
-        Req.getSolutions({keyword: this.refs.keyword.value}, function(newData) {
+        Req.getSolutionList({keyword: this.refs.keyword.value}, function(newData) {
             this.setState({
                 solutions: util.flattenSolutions(newData)
             })

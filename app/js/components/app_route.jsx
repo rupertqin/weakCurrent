@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react'
+import { Provider, connect } from 'react-redux';
+import { createStore, compose, combineReducers } from 'redux';
 import { Router, Route, Link, IndexRoute, Redirect } from 'react-router'
 import { ReduxRouter, routerStateReducer, reduxReactRouter, pushState } from 'redux-router';
 import { createHistory, useBasename } from 'history'
-import { createStore, compose, combineReducers } from 'redux';
-import { Provider, connect } from 'react-redux';
 
 import Req from '../mod/request'
 import { Search } from './search.jsx'

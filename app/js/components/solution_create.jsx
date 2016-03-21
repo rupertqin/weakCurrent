@@ -3,7 +3,7 @@ import { Router, Route, Link, Redirect } from 'react-router'
 import _ from 'lodash'
 
 import Req from '../mod/request'
-import { Items } from './items.jsx';
+import { Item } from './item.jsx';
 
 class Sidebar extends React.Component {
     constructor () {
@@ -29,7 +29,9 @@ class Sidebar extends React.Component {
             <div className='navbar-inner'>
                 <h3>{this.props.module.name}</h3>
                 <form className='items form-horizontal' ref='form'>
-                    <Items items={this.props.parameters} />
+                    { this.props.parameters.map((item)=> {
+                        return <Item data={item} />
+                    })}
                 </form>
                 <div className='bottom'>
                     <span className='btn btn-success next' onClick={this.save.bind(this)}>选择并保存</span>
@@ -98,7 +100,9 @@ class StepRow extends React.Component {
                     {this.props.boxes.slice(this.state.startIdx, this.state.startIdx + this.state.showLen).map(function (node, i) {
                         return (
                             <div className="span3" key={i}>
-                                <Link to={`/create/${this.makeLinkStr(i)}`} className={i == this.props.ids[this.props.step]-this.state.startIdx ? 'active-light' : ''} activeClassName="active">
+                                <Link to={`/solution-create/${this.makeLinkStr(i)}`} 
+                                    className={i == this.props.ids[this.props.step]-this.state.startIdx ? 'active-light' : ''} 
+                                    activeClassName="active">
                                     <img src={node.cover} className="cover" />
                                     <button className="btn">{node.name}</button>
                                 </Link>
