@@ -1,24 +1,27 @@
 import React, { PropTypes, Component } from 'react'
 import ReactUpdate from 'react-addons-update'
 import { Router, Route, Link, Redirect } from 'react-router'
-import _ from 'lodash'
 import classnames from 'classnames'
 import linkState from 'react-link-state'
-
+import _ from 'lodash'
 
 import Req from '../mod/request'
+import { Item } from './item.jsx';
 
 class SideBar extends Component {
     constructor (props, context) {
         super(props, context)
-        this.state = {}
+        this.state = {
+            
+        }
     }
     componentWillReceiveProps (nextProps) {
         this.setState({item: nextProps.item})
     }
-    shouldComponentUpdate (nextProps, nextState) {
-        return !!(nextProps.item && nextProps.item.name !== undefined)
-    }
+    // shouldComponentUpdate (nextProps, nextState) {
+    //     return !!(nextProps.item && nextProps.item.name !== undefined)
+    // }
+
     changeTextArae (e) {
         const text = typeof e == 'object' ? e.target.value : e
         let item
@@ -31,6 +34,7 @@ class SideBar extends Component {
         }
         this.setState({item: item})
     }
+
     changeFillIn (question, i, e) {
         const text = typeof e == 'object' ? e.target.value : e
         let questionObj = {}
@@ -40,6 +44,7 @@ class SideBar extends Component {
             item: item
         })
     }
+
     replaceWithInput (question, i) {
         let text = question.text.split('<>')
         return (<div>
@@ -51,20 +56,22 @@ class SideBar extends Component {
             {text[1]}
         </div>)
     }
-    handleSave () {
+
+    handleSave (e) {
+        e.preventDefault()
         let saveFn
-        switch (this.state.item.editType) {
+        switch (this.state.editKey) {
             case 'title':
                 this.props.save(this.state.item)
                 break;
-            case 'text':
+            case 'description':
                 this.props.save(this.state.item)
                 break;
-            case 'advance':
+            default:
                 this.props.save(this.state.item)
-                break;
         }
     }
+
     choose (i, question, j) {
         let questionObj = {}
         questionObj[i] = {value:  {$set: j}}
@@ -73,32 +80,33 @@ class SideBar extends Component {
             item: item
         })
     }
+
     render() {
+        if (!this.props.item) return null
         let tpl
-        switch (this.props.item.editType) {
+        switch (this.props.editKey) {
             case 'title':
                 tpl = <div>
                     <h4>标题</h4>
                     <div>
                         <textarea rows="8" 
-                            value={this.state.item.name} 
-                            onChange={this.changeTextArae.bind(this)}
+                            valueLink={linkState(this, 'item')}
                             ref='newTxt' />
                     </div>
                 </div>
                 break;
-            case 'text':
+
+            case 'description':
                 tpl = <div>
-                    <h4>{this.props.item.name}</h4>
                     <div>
                         <textarea rows="8" 
-                            value={this.state.item.content} 
-                            onChange={this.changeTextArae.bind(this)}
+                            valueLink={linkState(this, 'item')}
                             ref='newTxt' />
                     </div>
                 </div>
                 break;
-            case 'advance':
+
+            default:
                 tpl = <div>
                     <h4>{this.props.item.name}</h4>
                     {this.state.item.questions.map(function (question, i) {
@@ -111,6 +119,7 @@ class SideBar extends Component {
                                     </div>
                                 </div>
                             )
+
                         } else if (question.type == "radio") {
                             questionDom = (
                                 <div className="control-group" key={i}>
@@ -133,31 +142,32 @@ class SideBar extends Component {
                             )
                         }
                         return questionDom;
-
                     }.bind(this))}
                 </div>
-                break;
         }
+
         return (
             <div className={classnames({'side-bar span3': true,'hide': !this.props.isSideBarOpen})}>
                 <div className="inner">
-                    {tpl}
-                    <div className="bottom">
-                        <button onClick={this.handleSave.bind(this)} className="btn btn-success btn-small">保存</button>
-                    </div>
+                    <form onSubmit={this.handleSave.bind(this)}>
+                        {tpl}
+                        <div className="bottom">
+                            <button className="btn btn-success btn-small">保存</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         )
     }
 }
+
 SideBar.propTypes = {
-    item: PropTypes.object.isRequired,
     isSideBarOpen: PropTypes.bool,
     save: PropTypes.func.isRequired
 }
 
 
-class Item extends Component {
+class ItemY extends Component {
     constructor (props, context) {
         super(props, context)
     }
@@ -175,12 +185,13 @@ class Item extends Component {
         )
     }
 }
-Item.propTypes = {
+
+ItemY.propTypes = {
     data: PropTypes.object.isRequired
 }
 
 
-class DocGeneration extends Component {
+class PaperCreate extends Component {
     constructor (props){
         super(props)
         let { sId, tId } = this.props.params
@@ -188,10 +199,7 @@ class DocGeneration extends Component {
             sId: sId,
             tId: tId,
             isSideBarOpen: false,
-            question: {
-                type: '',
-                data: {}
-            }
+            question: undefined
         }
     }
 
@@ -210,28 +218,28 @@ class DocGeneration extends Component {
             question: item
         })
     }
+
     save (item) {
         let newData
         let setObj = {}
-        switch (this.state.question.editType) {
+        switch (this.state.editKey) {
             case 'title':
                 newData = ReactUpdate(this.state.data, {title: {$set: item}})
                 break;
-            case 'text':
+            case 'description':
                 setObj[this.state.editKey] = {$set: item}
                 newData = ReactUpdate(this.state.data, setObj)
                 break;
             case 'advance':
                 setObj.overall = {$set: item}
                 newData = ReactUpdate(this.state.data, setObj)
-                break;
-
         }
         this.setState({
             data: newData,
             isSideBarOpen: false
         })
     }
+
     render() {
         if (!this.state.data) return null
 
@@ -270,19 +278,19 @@ class DocGeneration extends Component {
                                 <h3>
                                     Section: 
                                     <button className="btn btn-mini btn-success"
-                                            onClick={this.edit.bind(this, 'section', section)}
+                                            onClick={this.edit.bind(this, 'sections', section)}
                                     >编辑</button>
                                 </h3>
                                 <div className="" dangerouslySetInnerHTML={{__html: section.text}}></div>
                             </div>
                         })}
                     </div>
-                    <SideBar isSideBarOpen={this.state.isSideBarOpen} save={this.save.bind(this)} item={this.state.question} />
+                    <SideBar isSideBarOpen={this.state.isSideBarOpen} save={this.save.bind(this)} editKey={this.state.editKey} item={this.state.question} />
                 </div>
             </div> 
         )
     }
 }
 
-export default DocGeneration
+export default PaperCreate
 
