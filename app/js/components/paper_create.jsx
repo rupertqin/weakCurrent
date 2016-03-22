@@ -119,7 +119,7 @@ class SideBar extends Component {
                                 <div className="control-group" key={i}>
                                     <label className="control-label ellipsis">{key}</label>
                                     <div className="controls">
-                                        <input type="text" name={key} />
+                                        <input type="text" name={key} defaultValue={param.answer} />
                                     </div>
                                 </div>
                             )
@@ -129,10 +129,10 @@ class SideBar extends Component {
                                 <div className="control-group" key={i}>
                                     <label className="control-label ellipsis">{key}</label>
                                     <div className="controls">
-                                        <select name={key}>
+                                        <select name={key} defaultValue={param.answer}>
                                             {param.options.map(function (value, j) {
                                                 return (
-                                                    <option name={`optionsRadios`} value={j} key={j}>
+                                                    <option name={`optionsRadios`} value={value} key={j}>
                                                         {value}
                                                     </option>
                                                 )
@@ -226,12 +226,6 @@ class PaperCreate extends Component {
         for (var key in section.params){
             let answer = section.params[key].answer
             if (!answer) continue;
-
-            // get select value
-            if (section.params[key].type == 'select') {
-                answer = section.params[key].options[answer]
-            }
-
             let p = new RegExp(`{{ ${key} }}`, 'g')
             rv = rv.replace(p, `<span class="param">${answer}</span>`)
         }
@@ -267,12 +261,7 @@ class PaperCreate extends Component {
                 if (!section.params[key].answer) {
                     section.params[key] = '';
                 } else {
-                    if (section.params[key].type == 'select') {
-                        let i =section.params[key].answer
-                        section.params[key] = section.params[key].options[i]
-                    } else {
-                        section.params[key] = section.params[key].answer
-                    }
+                    section.params[key] = section.params[key].answer
                 }
 
             }        
