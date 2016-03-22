@@ -49,7 +49,7 @@ class Sidebar extends React.Component {
 class StepRow extends React.Component {
     constructor (props) {
         super(props)
-        const showLen = 3
+        const showLen = 4
         this.state = {
             startIdx: 0,
             showLen: showLen,
