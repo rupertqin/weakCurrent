@@ -259,6 +259,32 @@ class PaperCreate extends Component {
         })
     }
 
+    create () {
+        this.state.data.template = {id: this.state.tId}
+        this.state.data.solution = {id: this.state.sId}
+        this.state.data.sections = this.state.data.sections.map((section)=> {
+            for (var key in section.params){
+                if (!section.params[key].answer) {
+                    section.params[key] = '';
+                } else {
+                    if (section.params[key].type == 'select') {
+                        let i =section.params[key].answer
+                        section.params[key] = section.params[key].options[i]
+                    } else {
+                        section.params[key] = section.params[key].answer
+                    }
+                }
+
+            }        
+            return section
+        })
+        Req.createPaper(this.state.data, (fb)=> {
+            if (fb.id) {
+                alert('保存文书成功')
+            }
+        })
+    }
+
     render() {
         if (!this.state.data) return null
 
@@ -270,7 +296,7 @@ class PaperCreate extends Component {
                     <div className="span3"><h1>文书生成</h1></div>
                     <div className={'span2 ' + (this.state.isSideBarOpen ? 'offset4' : 'offset7')}>
                         <Link className="btn btn-mini btn-success" to="/login">打印</Link>
-                        <Link className="btn btn-mini btn-success" to="/reg">保存文书</Link>
+                        <span className="btn btn-mini btn-success" onClick={this.create.bind(this)}>保存文书</span>
                     </div>
                 </header>
                 <div className="container row-fluid">
