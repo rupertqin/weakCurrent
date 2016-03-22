@@ -18,8 +18,13 @@ class Sidebar extends React.Component {
 
     save () {
         let formArr = _.toArray(this.refs.form)
-        let answers = formArr.map((field)=> field.value )
-        this.props.markAndSaveAnswers(answers)
+        let profiles = formArr.map((field, i)=> {
+            return {
+                parameter: {id: this.props.parameters[i].module_id},
+                value: field.value
+            }
+        }.bind(this))
+        this.props.markAndSaveAnswers(profiles)
     }
 
     render() {
@@ -208,7 +213,7 @@ class Create extends React.Component {
         })
     }
 
-    markAndSaveAnswers (answers) {
+    markAndSaveAnswers (profiles) {
         // mark as saved
         let module = this.state.data
         this.state.ids.forEach((id)=> {
@@ -216,10 +221,8 @@ class Create extends React.Component {
             module = module.children[id]
         })
 
-        // save current answers
-        module.answers = answers
-
-        // module.answers
+        // save current profiles
+        module.profiles = profiles
         this.setState({
             data: this.state.data
         })

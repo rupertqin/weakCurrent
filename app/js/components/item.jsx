@@ -34,7 +34,7 @@ class Item extends React.Component {
                         <select valueLink={linkState(this, 'answer')}>
                             {this.props.data.options.map(function (value, j) {
                                 return (
-                                    <option name={`optionsRadios`} value={j} key={j}>
+                                    <option name={`optionsRadios`} value={value} key={j}>
                                         {value}
                                     </option>
                                 )
